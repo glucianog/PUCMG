@@ -1,0 +1,11 @@
+﻿AEDs I;
+AEDs II;AEDs I
+Matemática Discreta;
+Arquitetura I;Introdução à Computação
+Arquitetura II;Arquitetura I
+Sistemas Operacionais;Arquitetura II
+Grafos;AEDs II
+Iniciação à Pesquisa;Introdução à Computação,AEDs II
+Introdução à Computação;
+Compiladores;AEDs II,Teoria de Linguagens
+Teoria de Linguagens;Matemática Discreta

@@ -1,0 +1,826 @@
+1 - Retorno de uma String em minúsculo 
+Select lower(nomAut) "Lowercase" from Autor;
+
+Lowercase
+-----------------------------------
+josé luis do rego
+leandro duprê
+josé mauro de vasconcelos
+shamkant b. navathe
+ramez elmasri
+pablo neruda
+machado de assis
+guimarµes rosa
+maria josé duprê
+josé de alencar
+jô soares
+
+Lowercase
+-----------------------------------
+oscar wilde
+james joyce
+Émile zola
+gustave flaubert
+cassandra clare
+jafar panahi
+
+17 linhas selecionadas.
+
+
+2 - Retorno de letra maiúscula no começo de cada palavra da string
+Select initcap(nomObr) from Obra;
+
+
+INITCAP(NOMOBR)
+-----------------------------------
+Estado De Minas
+Ieec
+Sistemas De Banco De Dados
+Luna Brava
+Entidade E Relacionamentos
+Vinte Poemas De Amor
+Canção General
+Cem Sonetos De Amor
+Meu Pé De Laranja Lima
+Doidµo
+Menino Do Engenho
+
+INITCAP(NOMOBR)
+-----------------------------------
+Doidinho
+Iracema
+O Guarani
+Senhora
+LucíOla
+A Pata Da Gazela
+Encarnação
+Luz E Sombra
+Os Rodrigues
+D. Lola
+O Estado De Sµo Paulo
+
+INITCAP(NOMOBR)
+-----------------------------------
+A Folha De Sµo Paulo
+JardíN De Invierno
+Tentativa Del Hombre Infinito
+Crepuscularioo
+Cidade Dos Ossos
+Princesa MecâNica
+Cidade Das Almas Perdidas
+Cidade Das Cinzas
+Cidade Dos Anjos CaíDos
+
+31 linhas selecionadas.
+
+3 - Retorna o tamanho da string
+Select length(nomAut) from Autor;
+LENGTH(NOMAUT)
+--------------
+            35
+            35
+            35
+            35
+            35
+            35
+            35
+            35
+            35
+            35
+            35
+
+LENGTH(NOMAUT)
+--------------
+            35
+            35
+            35
+            35
+            35
+            35
+
+17 linhas selecionadas.
+
+
+4 - Retorno de uma string em maiúsculo
+Select NLS_Upper (nomEdi) "Uppercase" from Editora;
+
+Uppercase
+--------------------------------------------------------------------------------
+
+EDITORA ATLAS
+EDITORA FTC
+EDITORA LTC
+EDITORA VOZES
+EDITORA CASCAIS
+EDIOURO
+EDITORA CORTEZ
+BRASILIENSE
+EDITORA ATELIê
+EDITORA ÁTICA
+EDITORA INTRíSECA
+
+Uppercase
+--------------------------------------------------------------------------------
+
+EDITORA THE CHICKEN HOUSE
+EDITORA SARAIVA
+
+13 linhas selecionadas.
+
+
+5 - Verifica o atual fuso horário do servidor.
+SELECT DBTIMEZONE FROM EMPRESTIMO;
+
+
+DBTIME
+------
++00:00
++00:00
++00:00
++00:00
++00:00
++00:00
++00:00
++00:00
++00:00
++00:00
++00:00
+
+
+6 - Calcula o módulo de um numero dividido pelo outro
+Select codObr,NomObr
+	from Obra
+	where codObr = 
+	(Select Mod(11,4) "Modulus" from Dual)
+	Order by nomObr;
+    CODOBR NOMOBR
+---------- -----------------------------------
+         3 Sistemas de Banco de Dados
+
+7 - Troca as letras de um dado por outro desejado
+Select replace(nomAut,'J','T') "Changes" from Autor;
+
+Changes
+-----------------------------------
+Tosé Luis do Rego
+Leandro Duprê
+Tosé Mauro de Vasconcelos
+Shamkant B. Navathe
+Ramez Elmasri
+Pablo Neruda
+Machado de Assis
+Guimarães Rosa
+Maria Tosé Duprê
+Tosé de Alencar
+Tô Soares
+
+Changes
+-----------------------------------
+Oscar Wilde
+Tames Toyce
+Émile Zola
+Gustave Flaubert
+Cassandra Clare
+Tafar Panahi
+
+17 linhas selecionadas.
+
+8 - Retorna os valores que são foneticamentes parecidos com determinada palavra 
+Select nomAut from Autor
+	where SOUNDEX(nomAut) = SOUNDEX('AO');
+
+nÒo hß linhas selecionadas
+
+
+9 - Separa a string com todos os valores existentes na string
+Select decompose (nomObr) from Obra;
+DECOMPOSE(NOMOBR)
+----------------------------------------------------------------------
+
+Estado de Minas
+IEEC
+Sistemas de Banco de Dados
+Luna Brava
+Entidade e Relacionamentos
+Vinte poemas de Amor
+Canção General
+Cem sonetos de Amor
+Meu pé de Laranja Lima
+Doidão
+Menino do Engenho
+
+DECOMPOSE(NOMOBR)
+----------------------------------------------------------------------
+
+Doidinho
+Iracema
+O Guarani
+Senhora
+Lucíola
+A pata da Gazela
+Encarnação
+Luz e Sombra
+Os Rodrigues
+D. Lola
+O Estado de São Paulo
+
+DECOMPOSE(NOMOBR)
+----------------------------------------------------------------------
+
+A Folha de São Paulo
+Jardín de invierno
+Tentativa del hombre infinito
+Crepuscularioo
+Cidade dos Ossos
+Princesa Mecânica
+Cidade das Almas Perdidas
+Cidade das Cinzas
+Cidade dos Anjos Caídos
+
+31 linhas selecionadas.
+
+10 - Retorna o valor ao quadrado
+Select power(ValVei,2) "Raised" from HistEmplacamento;
+
+    Raised
+----------
+44444488,9
+44444488,9
+ 177777689
+ 177777689
+ 400000000
+ 400000000
+ 711111289
+ 711111289
+1111110889
+1111110889
+1600000000
+
+11 - Retorna a mediana de cada dado
+
+Select codEdi,nomEdi, MEDIAN(ValExe)
+	from Editora
+	natural join Exemplar
+	group by codEdi,nomEdi;
+
+    CODEDI NOMEDI                              MEDIAN(VALEXE)
+---------- ----------------------------------- --------------
+         1 Editora Atlas                                  110
+         2 Editora FTC                                   80,8
+         3 Editora LTC                                  65,65
+         5 Editora Cascais                              62,45
+         7 Editora Cortez                                80,8
+         8 Brasiliense                                   47,9
+         9 Editora Ateliê                                73,4
+        10 Editora Ática                                 80,8
+        11 Editora Intríseca                             21,4
+        12 Editora The Chicken House                       20
+        13 Editora Saraiva                               60,9
+
+11 linhas selecionadas.
+
+
+12 - Retorna o valor absoluto de um dado
+Select abs(ValExe) from Exemplar;
+
+ABS(VALEXE)
+-----------
+        110
+      110,3
+        130
+       80,8
+         90
+       80,8
+         50
+       70,9
+         50
+         20
+       10,3
+
+
+13 - Seleciona um determinado caracter em ASCII 
+Select CHR( 67) || CHR(88) || CHR(65) from Autor;
+
+CHR
+---
+CXA
+CXA
+CXA
+CXA
+CXA
+CXA
+CXA
+CXA
+CXA
+CXA
+CXA
+
+14 - Retorna o valor de um dado que inicia com uma letra x em ASCII
+Select nomAut from Autor
+	where ASCII(SUBSTR(nomAut,1,1)) = 75; 
+
+nÒo hß linhas selecionadas
+
+15 - Retorna um timestamp para o formato de hora com fuso horario
+SELECT FROM_TZ(TIMESTAMP '2000-03-28 08:00:00', '3:00') 
+   FROM Obra;
+FROM_TZ(TIMESTAMP'2000-03-2808:00:00','3:00')
+---------------------------------------------------------------------------
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+28/03/00 08:00:00,000000000 +03:00
+
+
+16 - Select nomUsu, datEmp, TO_CHAR(ADD_MONTHS(LAST_DAY(datpredev),1)) "Nova data"
+	from Usuario natural join Emprestimo;
+
+
+NOMUSU                              DATEMP   Nova dat
+----------------------------------- -------- --------
+Maria Luiza Pereira                 01/10/11 30/11/11
+Maria Luiza Pereira                 01/03/12 30/04/12
+Maria Luiza Pereira                 01/02/12 31/03/12
+Maria Luiza Pereira                 01/09/09 31/10/09
+Mário José Silveira                 01/01/12 29/02/12
+Mário José Silveira                 01/09/10 31/10/10
+Dalmo Lucas jardim                  01/09/11 31/10/11
+Helena Albuquerque                  01/09/11 31/10/11
+Helena Albuquerque                  26/09/17 30/11/17
+Saulo Castro Silva                  22/03/16 30/04/16
+Lucas Rodrigo Arantes               06/10/11 30/11/11
+
+NOMUSU                              DATEMP   Nova dat
+----------------------------------- -------- --------
+Cecília Andrade Albuquerque         05/10/11 30/11/11
+Rafael Andrade                      07/10/11 30/11/11
+Maria Eduarda de Silva Santos       03/10/11 30/11/11
+Leandro Paula Braga                 01/12/15 31/01/16
+Renata Gonzalez Albuquerque e Silva 22/03/16 30/04/16
+Cassia Abrantes Juarez              06/10/11 30/11/11
+Gabriel Luciano Gomes               01/10/11 30/11/11
+Rafaela Pascoalino                  04/10/11 30/11/11
+Marcelo Werneck                     06/10/11 30/11/11
+Heleny Bessa                        07/10/11 30/11/11
+Heleny Bessa                        01/12/15 31/01/16
+
+NOMUSU                              DATEMP   Nova dat
+----------------------------------- -------- --------
+Maria Aparecida                     26/11/14 31/12/14
+
+23 linhas selecionadas.
+
+
+17 - Retorna o valor arredondado para cima
+Select numExe,ceil(ValExe) from Exemplar;
+
+
+    NUMEXE CEIL(VALEXE)
+---------- ------------
+         2          110
+         3          111
+         4          130
+         5           81
+        10           90
+         6           81
+         7           50
+         8           71
+         9           50
+        11           20
+        12           11
+
+    NUMEXE CEIL(VALEXE)
+---------- ------------
+        13           14
+        14           81
+        15           10
+        16            9
+        17           51
+        18           23
+        19           52
+        20           45
+        21           12
+        22          111
+        23          130
+
+    NUMEXE CEIL(VALEXE)
+---------- ------------
+        24           81
+        25           30
+        26           81
+        27           54
+        28           71
+        29           52
+        30           35
+        31           34
+        32          151
+        33           99
+        34           81
+
+    NUMEXE CEIL(VALEXE)
+---------- ------------
+        35           95
+        36           88
+        37           59
+        38           78
+        39           54
+
+38 linhas selecionadas.
+
+18 - Retorna o valor arredondado para baixo
+Select numExe,floor(ValExe) from Exemplar;
+
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+         2           110
+         3           110
+         4           130
+         5            80
+        10            90
+         6            80
+         7            50
+         8            70
+         9            50
+        11            20
+        12            10
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+        13            13
+        14            80
+        15             9
+        16             8
+        17            50
+        18            22
+        19            51
+        20            44
+        21            11
+        22           110
+        23           130
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+        24            80
+        25            29
+        26            80
+        27            54
+        28            70
+        29            51
+        30            34
+        31            33
+        32           150
+        33            99
+        34            80
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+        35            95
+        36            87
+        37            59
+        38            77
+        39            53
+
+38 linhas selecionadas.
+
+19 - Retorna o valor sem casas decimais
+Select plaVei, trunc(ValVei) from HistEmplacamento;
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+         2           110
+         3           110
+         4           130
+         5            80
+        10            90
+         6            80
+         7            50
+         8            70
+         9            50
+        11            20
+        12            10
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+        13            13
+        14            80
+        15             9
+        16             8
+        17            50
+        18            22
+        19            51
+        20            44
+        21            11
+        22           110
+        23           130
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+        24            80
+        25            29
+        26            80
+        27            54
+        28            70
+        29            51
+        30            34
+        31            33
+        32           150
+        33            99
+        34            80
+
+    NUMEXE FLOOR(VALEXE)
+---------- -------------
+        35            95
+        36            87
+        37            59
+        38            77
+        39            53
+
+38 linhas selecionadas.
+
+SQL> Select plaVei, trun
+
+PLAVEI  TRUNC(VALVEI)
+------- -------------
+ABC0001          6666
+ABC0002          6666
+CBA0003         13333
+CBA0004         13333
+DBA0005         20000
+DBA0006         20000
+DBA0007         26666
+DBA0008         26666
+DBA0009         33333
+DBA0010         33333
+DBA0011         40000
+
+PLAVEI  TRUNC(VALVEI)
+------- -------------
+DBA0012         40000
+DBA6014         46666
+DBA6015         53333
+GTA6016         53333
+GTA6017         60000
+GTA6018         60000
+GTA6019         66666
+GTA6020         66666
+FBB7021         73333
+FBB7022         73333
+FBB7023         80000
+
+PLAVEI  TRUNC(VALVEI)
+------- -------------
+FBB7024         80000
+FBB7025         86666
+FBB7026         86666
+FBB7027         93333
+FBB7028         93333
+FBB7029        100000
+TCC7030        100000
+TCC7031          6666
+TCC7032          6666
+TCC7033         13333
+TCC7034         13333
+
+PLAVEI  TRUNC(VALVEI)
+------- -------------
+TCC7035         20000
+TCC7036         20000
+TCC7037         26666
+TCC7038         26666
+TCC7039         33333
+TCV7040         33333
+TCV7041         40000
+TCV7042         40000
+TCV7043         46666
+TCV7044         46666
+TCV7045         53333
+
+PLAVEI  TRUNC(VALVEI)
+------- -------------
+TCV7046         53333
+TCV7047         60000
+TCV7048         60000
+TCV7049         66666
+TCW8050         66666
+DBA6013         40000
+
+50 linhas selecionadas.
+
+20 - Retorna o valor de uma string1 removida o conteúdo da string2;
+Select LTRIM(nomAut,'João') from Autor;
+
+LTRIM(NOMAUT,'JOãO')
+-----------------------------------
+sé Luis do Rego
+Leandro Duprê
+sé Mauro de Vasconcelos
+Shamkant B. Navathe
+Ramez Elmasri
+Pablo Neruda
+Machado de Assis
+Guimarães Rosa
+Maria José Duprê
+sé de Alencar
+ô Soares
+
+LTRIM(NOMAUT,'JOãO')
+-----------------------------------
+Oscar Wilde
+ames Joyce
+Émile Zola
+Gustave Flaubert
+Cassandra Clare
+afar Panahi
+
+17 linhas selecionadas.
+
+21 - Retorna a string até um tamanho máximo (lendo da esquerda para direita, adcionando um caracter se o tamanho for maior que o da string)
+
+Select LPAD(nomObr,10,'*') from Obra;
+
+
+LPAD(NOMOB
+----------
+Estado de
+IEEC
+Sistemas d
+Luna Brava
+Entidade e
+Vinte poem
+Canção Gen
+Cem soneto
+Meu pé de
+Doidão
+Menino do
+
+LPAD(NOMOB
+----------
+Doidinho
+Iracema
+O Guarani
+Senhora
+Lucíola
+A pata da
+Encarnação
+Luz e Somb
+Os Rodrigu
+D. Lola
+O Estado d
+
+LPAD(NOMOB
+----------
+A Folha de
+Jardín de
+Tentativa
+Crepuscula
+Cidade dos
+Princesa M
+Cidade das
+Cidade das
+Cidade dos
+
+31 linhas selecionadas.
+
+
+22 - Retornar a string até um tamanho máximo (lendo da direita para esquerda, adcionando um caracter se o tamanho for maior que o da string)
+Select RPAD(nomObr,10,'*') from Obra;
+
+RPAD(NOMOB
+----------
+Estado de
+IEEC
+Sistemas d
+Luna Brava
+Entidade e
+Vinte poem
+Canção Gen
+Cem soneto
+Meu pé de
+Doidão
+Menino do
+
+RPAD(NOMOB
+----------
+Doidinho
+Iracema
+O Guarani
+Senhora
+Lucíola
+A pata da
+Encarnação
+Luz e Somb
+Os Rodrigu
+D. Lola
+O Estado d
+
+RPAD(NOMOB
+----------
+A Folha de
+Jardín de
+Tentativa
+Crepuscula
+Cidade dos
+Princesa M
+Cidade das
+Cidade das
+Cidade dos
+
+31 linhas selecionadas.
+
+23 - Select ACOS(codAut) "Arc_Cosseno" from Autor
+	where codAut = 1;
+
+Arc_Cosseno
+-----------
+          0
+
+24 - Select asin(codAut) "Arc_seno" from Autor
+    where codAut =1;
+
+
+  Arc_seno
+----------
+1,57079633
+
+
+
+25 - select atan(codObr) "Arc_tangente" from Obra where codObr =2;
+
+
+Arc_tangente
+------------
+  1,10714872
+
+
+26 -  Select atan2(.3,.2) "Arc_tangent2" from Emprestimo;
+
+Arc_tangent2
+------------
+  ,982793723
+
+27 - Select cosh(codAut) "Cosseno Hiperbólico" from Autor
+  2  where codAut=2;
+
+Cosseno Hiperbólico
+-------------------
+         3,76219569
+
+
+28 -  Select COS(180*codAut/2) "Valor de Cosseno" from Autor
+  where codAut  = 3;
+
+Valor de Cosseno
+----------------
+      ,984381951
+
+
+29 - Select ln(codMar) "Logarimo natural" from Marca
+  where codMar = 3;
+
+Logarimo natural
+----------------
+      1,09861229
+
+
+30  -  Select LOG(10,codMod) "Log base 10" from Modelo;
+
+Log base 10
+-----------
+          0
+ ,301029996
+ ,477121255
+ ,602059991
+ ,698970004
+  ,77815125
+  ,84509804
+ ,903089987
+ ,954242509
+          1
+ 1,04139269
+
+Log base 10
+-----------
+ 1,07918125
+ 1,11394335
+ 1,14612804
+ 1,17609126
+ 1,20411998
+ 1,23044892
+ 1,25527251
+  1,2787536
+    1,30103
+
+20 linhas selecionadas.
+
+
+
+
+

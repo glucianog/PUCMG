@@ -1,0 +1,581 @@
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 #INCLUDE <P16F628A.INC>         ;ARQUIVO PADRÃO MICROCHIP PARA 16F628A
+                      00001         LIST
+                      00002 ; P16F628A.INC  Standard Header File, Version 1.10    Microchip Technology, Inc.
+                      00265         LIST
+                      00266 
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3F10           00002 __CONFIG H'3F10'
+                      00003 
+                      00004 #DEFINE BANK0   BCF STATUS,RP0  ;SETA BANK 0 DE MEMÓRIA
+                      00005 
+                      00006 #DEFINE BANK1   BSF STATUS,RP0  ;SETA BANK 1 DE MAMÓRIA
+                      00007 
+                      00008         CBLOCK  0x20    ;ENDEREÇO INICIAL DA MEMÓRIA DE USUÁRIO
+  00000020            00009         CONTADOR1
+  00000021            00010         CONTADOR2
+  00000022            00011         CONTADOR3
+  00000023            00012         CONTADORTERREO
+  00000024            00013         CONTADOR1A
+  00000025            00014         CONTADOR2A
+  00000026            00015         CONTADOR3A
+  00000027            00016         CONT1
+  00000028            00017         CONT2
+  00000029            00018         CONT3
+                      00019 
+                      00020 
+                      00021 
+                      00022 
+                      00023         ENDC                    ;FIM DO BLOCO DE MEMÓRIA                
+                      00024 
+                      00025 #DEFINE BOTAO   PORTA,2 ;PORTA DO BOTÃO
+                      00026                                         ; 0 -> PRESSIONADO
+                      00027                                         ; 1 -> LIBERADO
+                      00028 
+                      00029 #DEFINE LED1    PORTB,0 ;PORTA DO LED
+                      00030                                 ; 0 -> APAGADO
+                      00031                                 ; 1 -> ACESO
+                      00032 
+                      00033 #DEFINE LED2    PORTB,1 ;PORTA DO LED
+                      00034                                 ; 0 -> APAGADO
+                      00035                                 ; 1 -> ACESO
+                      00036 
+                      00037 #DEFINE LED3    PORTB,2 ;PORTA DO LED
+                      00038                                 ; 0 -> APAGADO
+                      00039                                 ; 1 -> ACESO
+                      00040 
+                      00041 #DEFINE LED4    PORTB,3 ;PORTA DO LED
+                      00042                                 ; 0 -> APAGADO
+                      00043                                 ; 1 -> ACESO
+                      00044 
+                      00045 
+0000                  00046         ORG     0x00            ;ENDEREÇO INICIAL DE PROCESSAMENTO
+0000   2801           00047         GOTO    INICIO
+                      00048         
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0001                  00049 INICIO
+0001   0185           00050         CLRF    PORTA           ;LIMPA O PORTA
+0002   0186           00051         CLRF    PORTB           ;LIMPA O PORTB
+0003   1683           00052         BANK1                   ;ALTERA PARA O BANCO 1
+0004   3004           00053         MOVLW   B'00000100'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0005   0085           00054         MOVWF   TRISA           ;DEFINE RA2 COMO ENTRADA E DEMAIS COMO SAÍDAS
+0006   3000           00055         MOVLW   B'00000000'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0086           00056         MOVWF   TRISB           ;DEFINE TODO O PORTB COMO SAÍDA
+0008   3000           00057         MOVLW   B'00000000'
+0009   008B           00058         MOVWF   INTCON          ;TODAS AS INTERRUPÇÕES DESLIGADAS
+000A   1283           00059         BANK0                   ;RETORNA PARA O BANCO 0
+000B   3007           00060         MOVLW   B'00000111'
+000C   009F           00061         MOVWF   CMCON           ;DEFINE O MODO DO COMPARADOR ANALÓGICO
+                      00062 
+000D                  00063 MAIN
+                      00064                 
+                      00065 
+                      00066 
+000D   1D05           00067         BTFSS   BOTAO             ;BOTÃO ESTÁ PRESSIONADO?
+000E   282B           00068         GOTO    BOTAO_PRES        ;SIM, ENTÃO TRATA BOTÃO PRESSIONADO
+                      00069 
+                      00070 
+                      00071         
+                      00072 
+                      00073 
+                      00074                                 ;APAGA O LED2
+                      00075 
+                      00076         ; ================  SOBE ================ ;
+                      00077         ; ================ TÉRREO ================ ;
+                      00078 
+000F   1086           00079         BCF LED2                        ;APAGA O LED2
+0010   1406           00080         BSF LED1                        ;ACENDE O LED1 - TÉRREO
+0011   203F           00081         CALL ATRASOTERREO       ;ATRASO DE 2 SEGUNDOS - TÉRREO + TESTE  
+                      00082 
+                      00083         ; ================ 1 ANDAR ================ ;
+                      00084 
+0012   1006           00085         BCF LED1                        ;APAGA O LED DO TERREO
+0013   1486           00086         BSF LED2                        ;ACENDER O LED DO 2 ANDAR
+0014   2047           00087         CALL ATRASO1A   ;ATRASO DE 2 SEGUNDOS  - 1 ANDAR + TESTE
+0015   2047           00088         CALL ATRASO1A   ;ATRASO DE 4 SEGUNDOS  - 1 ANDAR + TESTE
+                      00089 
+                      00090         ; ================ 2 ANDAR ================ ;   
+                      00091 
+0016   1086           00092         BCF LED2                        ;APAGA O LED2
+0017   1506           00093         BSF LED3                        ;ACENDE O LED 3 
+0018   204F           00094         CALL ATRASO2A   ;ATRASO DE 2 SEGUNDOS - 2 ANDAR + TESTE
+0019   204F           00095         CALL ATRASO2A   ;ATRASO DE 2 SEGUNDOS - 2 ANDAR + TESTE
+001A   204F           00096         CALL ATRASO2A   ;ATRASO DE 2 SEGUNDOS - 2 ANDAR + TESTE
+                      00097 
+                      00098         
+                      00099         ; ================ 3 ANDAR ================ ;
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00100 
+001B   1106           00101         BCF LED3                        ;APAGA LED 3
+001C   1586           00102         BSF LED4                        ;ACENDE LED 4   
+001D   2057           00103         CALL ATRASO3A   ;ATRASO DE 2 SEGUNDOS - 3 ANDAR + TESTE
+001E   2057           00104         CALL ATRASO3A   ;ATRASO DE 2 SEGUNDOS - 3 ANDAR + TESTE
+001F   2057           00105         CALL ATRASO3A   ;ATRASO DE 2 SEGUNDOS - 3 ANDAR + TESTE
+0020   2057           00106         CALL ATRASO3A   ;ATRASO DE 2 SEGUNDOS - 3 ANDAR + TESTE
+                      00107 
+                      00108 
+                      00109         ; ================  DESCE ================ ;
+                      00110         ; ================ 2 ANDAR ================ ;
+                      00111 
+0021   1186           00112         BCF LED4                        ;APAGA LED 4
+0022   1506           00113         BSF LED3                        ;ACENDE LED 3
+0023   204F           00114         CALL ATRASO2A   ;ATRASO DE 2 SEGUNDOS - 2 ANDAR + TESTE
+0024   204F           00115         CALL ATRASO2A   ;ATRASO DE 2 SEGUNDOS - 2 ANDAR + TESTE
+0025   204F           00116         CALL ATRASO2A   ;ATRASO DE 2 SEGUNDOS - 2 ANDAR + TESTE
+                      00117 
+                      00118         ; ================ 1 ANDAR ================ ;
+                      00119 
+0026   1106           00120         BCF LED3                        ;APAGA LED 3
+0027   1486           00121         BSF LED2                        ;ACENDE LED 2   
+0028   2047           00122         CALL ATRASO1A   ;ATRASO DE 2 SEGUNDOS  - 1 ANDAR + TESTE
+0029   2047           00123         CALL ATRASO1A   ;ATRASO DE 2 SEGUNDOS  - 1 ANDAR + TESTE
+                      00124 
+002A   280D           00125         GOTO MAIN
+                      00126 
+                      00127 
+002B                  00128 BOTAO_PRES ;ATRASO 10 SEGUNDOS NO TERRO - BOTÃO
+                      00129         
+002B   1086           00130         BCF LED2                        ;APAGA O LED2
+002C   1406           00131         BSF LED1                        ;ACENDE O LED1 - TÉRREO
+                      00132         
+002D   206C           00133         CALL ATRASODELAY
+002E   206C           00134         CALL ATRASODELAY
+002F   206C           00135         CALL ATRASODELAY
+0030   206C           00136         CALL ATRASODELAY
+0031   206C           00137         CALL ATRASODELAY
+                      00138 
+0032   280D           00139         GOTO MAIN
+                      00140 
+0033                  00141 BOTAO_PRES1 ; ATRASO 2 SGUNDOS NO 1 ANDAR - SUBIDA      
+                      00142 
+0033   1106           00143         BCF LED3                        ;APAGA O LED3  - 2 ANDAR
+0034   1486           00144         BSF LED2                        ;ACENDE O LED2 - 1 ANDAR
+0035   206C           00145         CALL ATRASODELAY
+0036   282B           00146         GOTO BOTAO_PRES
+                      00147 
+0037                  00148 BOTAO_PRES2 ; ATRASO 2 SGUNDOS NO 2 ANDAR - SUBIDA
+0037   1186           00149         BCF LED4                        ;APAGA O LED4  - 3 ANDAR
+0038   1506           00150         BSF LED3                        ;ACENDE O LED3 - 2 ANDAR
+0039   206C           00151         CALL ATRASODELAY
+003A   2833           00152         GOTO BOTAO_PRES1
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00153 
+003B                  00154 BOTAO_PRES3     ; ATRASO 2 SGUNDOS NO 3 ANDAR - SUBIDA
+003B   1106           00155         BCF LED3                        ;APAGA O LED3  - 2 ANDAR
+003C   1586           00156         BSF LED4                        ;ACENDE O LED4 - 3 ANDAR
+003D   206C           00157         CALL ATRASODELAY
+003E   2837           00158         GOTO BOTAO_PRES2
+                      00159 
+                      00160 ; ====================================================================== ; 
+                      00161 ; ============================ ATRASOS ================================= ;
+                      00162 ; ====================================================================== ; 
+                      00163 
+                      00164 ; ================ TESTE TERREO ================ ;
+                      00165 
+003F                  00166 ATRASOTERREO
+003F   3050           00167         MOVLW 50  ;50
+0040   00A3           00168         MOVWF CONTADORTERREO
+                      00169 
+Warning[207]: Found label after column 1. (DELAYT)
+0041                  00170         DELAYT
+0041   205F           00171                 CALL    ATRASO
+0042   1D05           00172                 BTFSS   BOTAO
+0043   282B           00173                 GOTO    BOTAO_PRES
+Message[305]: Using default destination of 1 (file).
+0044   0BA3           00174         DECFSZ  CONTADORTERREO
+0045   2841           00175         GOTO    DELAYT
+0046   0008           00176         RETURN
+                      00177  
+                      00178         
+                      00179 ; ================ TESTE 1 ANDAR ================ ;
+                      00180 
+0047                  00181 ATRASO1A
+0047   3050           00182         MOVLW 50        ; 37,5 VERIFICAÇÕES POR SEGUNDO ( 100 )
+0048   00A4           00183         MOVWF CONTADOR1A
+                      00184 
+Warning[207]: Found label after column 1. (DELAY1A)
+0049                  00185         DELAY1A
+0049   205F           00186                 CALL    ATRASO
+004A   1D05           00187                 BTFSS   BOTAO
+004B   2833           00188                 GOTO    BOTAO_PRES1
+Message[305]: Using default destination of 1 (file).
+004C   0BA4           00189         DECFSZ  CONTADOR1A
+004D   2849           00190         GOTO    DELAY1A
+004E   0008           00191         RETURN
+                      00192 
+                      00193 ; ================ TESTE 2 ANDAR ================ ;
+                      00194 
+004F                  00195 ATRASO2A
+004F   3050           00196         MOVLW 50        ; 29,6 VERIFICAÇÕES POR SEGUNDO ( 150 )         
+0050   00A5           00197         MOVWF CONTADOR2A
+                      00198 
+Warning[207]: Found label after column 1. (DELAY2A)
+0051                  00199         DELAY2A
+0051   205F           00200                 CALL    ATRASO  
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0052   1D05           00201                 BTFSS   BOTAO
+0053   2837           00202                 GOTO    BOTAO_PRES2
+Message[305]: Using default destination of 1 (file).
+0054   0BA5           00203         DECFSZ  CONTADOR2A
+0055   2851           00204         GOTO    DELAY2A
+                      00205 
+0056   0008           00206         RETURN
+                      00207 
+                      00208 ; ================ TESTE 3 ANDAR ================ ;
+                      00209 
+0057                  00210 ATRASO3A
+0057   3050           00211         MOVLW 50                ;200
+0058   00A6           00212         MOVWF CONTADOR3A
+                      00213 
+Warning[207]: Found label after column 1. (DELAY3A)
+0059                  00214         DELAY3A
+0059   205F           00215                 CALL    ATRASO
+005A   1D05           00216                 BTFSS   BOTAO
+005B   283B           00217                 GOTO    BOTAO_PRES3
+Message[305]: Using default destination of 1 (file).
+005C   0BA6           00218         DECFSZ  CONTADOR3A
+005D   2859           00219         GOTO    DELAY3A
+                      00220 
+005E   0008           00221         RETURN
+                      00222 
+                      00223 
+                      00224 
+                      00225  
+                      00226 
+005F                  00227 ATRASO          ;ATRASO DE 0,0025 SEGUNDOS TERREO       
+Warning[202]: Argument out of range.  Least significant bits used.
+005F   3033           00228         MOVLW   233                     ;233
+0060   00A0           00229         MOVWF   CONTADOR1       
+0061                  00230 ATRASO1         
+0061   3002           00231         MOVLW 2                         ;2
+0062   00A1           00232         MOVWF   CONTADOR2
+Warning[207]: Found label after column 1. (ATRASO2)
+0063                  00233         ATRASO2
+Warning[202]: Argument out of range.  Least significant bits used.
+0063   3050           00234                 MOVLW 250               ;250
+0064   00A2           00235                 MOVWF   CONTADOR3
+Warning[207]: Found label after column 1. (ATRASO3)
+0065                  00236                 ATRASO3
+Message[305]: Using default destination of 1 (file).
+0065   0BA2           00237                         DECFSZ  CONTADOR3       
+0066   2865           00238                         GOTO    ATRASO3
+Message[305]: Using default destination of 1 (file).
+0067   0BA1           00239                 DECFSZ  CONTADOR2       
+0068   2863           00240                 GOTO    ATRASO2
+Message[305]: Using default destination of 1 (file).
+0069   0BA0           00241         DECFSZ  CONTADOR1       
+006A   2861           00242         GOTO    ATRASO1
+006B   0008           00243         RETURN
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00244 
+                      00245 
+                      00246 ; ============================ ATRASO 2 SEGUNDOS ================================= ;
+                      00247 
+006C                  00248 ATRASODELAY             ;ATRASO DE 2 SEGUNDOS TERREO    
+Warning[202]: Argument out of range.  Least significant bits used.
+006C   3037           00249         MOVLW   237                     ;233
+006D   00A7           00250         MOVWF   CONT1   
+006E                  00251 ATRASODELAY1            
+006E   3090           00252         MOVLW 90                        ;2
+006F   00A8           00253         MOVWF   CONT2
+Warning[207]: Found label after column 1. (ATRASODELAY2)
+0070                  00254         ATRASODELAY2
+Warning[202]: Argument out of range.  Least significant bits used.
+0070   3053           00255                 MOVLW 253               ;250
+0071   00A9           00256                 MOVWF   CONT3
+Warning[207]: Found label after column 1. (ATRASODELAY3)
+0072                  00257                 ATRASODELAY3
+Message[305]: Using default destination of 1 (file).
+0072   0BA9           00258                         DECFSZ  CONT3   
+0073   2872           00259                         GOTO    ATRASODELAY3
+Message[305]: Using default destination of 1 (file).
+0074   0BA8           00260                 DECFSZ  CONT2   
+0075   2870           00261                 GOTO    ATRASODELAY2
+Message[305]: Using default destination of 1 (file).
+0076   0BA7           00262         DECFSZ  CONT1   
+0077   286E           00263         GOTO    ATRASODELAY1
+0078   0008           00264         RETURN
+                      00265 
+                      00266 
+                      00267 
+Warning[205]: Found directive in column 1. (END)
+                      00268 END                     ;OBRIGATÓRIO
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADEN                              00000003
+ATRASO                            0000005F
+ATRASO1                           00000061
+ATRASO1A                          00000047
+ATRASO2                           00000063
+ATRASO2A                          0000004F
+ATRASO3                           00000065
+ATRASO3A                          00000057
+ATRASODELAY                       0000006C
+ATRASODELAY1                      0000006E
+ATRASODELAY2                      00000070
+ATRASODELAY3                      00000072
+ATRASOTERREO                      0000003F
+BANK0                             BCF STATUS,RP0
+BANK1                             BSF STATUS,RP0
+BOTAO                             PORTA,2
+BOTAO_PRES                        0000002B
+BOTAO_PRES1                       00000033
+BOTAO_PRES2                       00000037
+BOTAO_PRES3                       0000003B
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCPR1H                            00000016
+CCPR1L                            00000015
+CIS                               00000003
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000001F
+CMIE                              00000006
+CMIF                              00000006
+CONT1                             00000027
+CONT2                             00000028
+CONT3                             00000029
+CONTADOR1                         00000020
+CONTADOR1A                        00000024
+CONTADOR2                         00000021
+CONTADOR2A                        00000025
+CONTADOR3                         00000022
+CONTADOR3A                        00000026
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CONTADORTERREO                    00000023
+CREN                              00000004
+CSRC                              00000007
+DC                                00000001
+DELAY1A                           00000049
+DELAY2A                           00000051
+DELAY3A                           00000059
+DELAYT                            00000041
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDATA                            0000009A
+EEIE                              00000007
+EEIF                              00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INICIO                            00000001
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+LED1                              PORTB,0
+LED2                              PORTB,1
+LED3                              PORTB,2
+LED4                              PORTB,3
+MAIN                              0000000D
+NOT_BO                            00000000
+NOT_BOD                           00000000
+NOT_BOR                           00000000
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+OERR                              00000001
+OPTION_REG                        00000081
+OSCF                              00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+PIR1                              0000000C
+PORTA                             00000005
+PORTB                             00000006
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PSA                               00000003
+RBIE                              00000003
+RBIF                              00000000
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+RX9                               00000006
+RX9D                              00000000
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+STATUS                            00000003
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1OSCEN                           00000003
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISB                             00000086
+TRMT                              00000001
+TX9                               00000006
+TX9D                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             0000009F
+VREN                              00000007
+VROE                              00000006
+VRR                               00000005
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DATA_CP_OFF                      00003FFF
+_DATA_CP_ON                       00003EFF
+_ER_OSC_CLKOUT                    00003FFF
+_ER_OSC_NOCLKOUT                  00003FFE
+_EXTCLK_OSC                       00003FEF
+_HS_OSC                           00003FEE
+_INTOSC_OSC_CLKOUT                00003FFD
+_INTOSC_OSC_NOCLKOUT              00003FFC
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FEC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC_CLKOUT                    00003FFF
+_RC_OSC_NOCLKOUT                  00003FFE
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FED
+__16F628A                         00000001
+__DEBUG                           1
+MPASM  5.35                      ELEVADOR.ASM   6-5-2017  7:30:51         PAGE 11
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXX-------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:   121
+Program Memory Words Free:  1927
+
+
+Errors   :     0
+Warnings :    14 reported,     0 suppressed
+Messages :    12 reported,     0 suppressed
+
+

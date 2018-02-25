@@ -1,0 +1,8 @@
+Ao realizarmos a execução do código com o contador de Threads dividindo por 2, temos o tempo 0.515s. 
+
+Na execução onde o contar de threads é decrementado em 1, temos o tempo : 0.540s.
+
+Na Execução onde o contador de threads é decrementado em 2, temos o tempo 0.238s. 
+
+
+Com isso, se conclui que quando temos o código com divisões sucessivas por 2, o tempo é maior pois se tem um grande numero de threads para execução do código. Por outro lado, na execução com decrementação, o numero de threads criadas são reduzidas e, além disso, quando chega em numero muito pequeno de elementos, ele para a execução paralela e executa o código sequencial e, por sua vez, o tempo de execução é expressamente reduzido.

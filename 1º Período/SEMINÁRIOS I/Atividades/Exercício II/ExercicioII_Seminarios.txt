@@ -1,0 +1,111 @@
+Exercício 1 - 
+
+Para concatenação de arquivos TXT através do comando "cat" é necessário que os arquivos .txt estejam
+no mesmo diretório e logo após basta inserir "cat (nome dos arquivos em sequencia) > (nome do arquivo 
+que conterá os textos concatenados).
+Exemplo.:
+
+cat introducao.txt desenvolvimento.txt conclusao.txt > texto.txt
+
+
+Exercício 2 - 
+
+a)  grep 'WARNING' log.txt
+b)  grep 'ERROR' log.txt
+
+
+Exercício 3 -
+
+echo 'hello world, hello again' | sh exemplo.sh |grep hello  
+    2 hello
+
+Exercício 4 -
+
+- ARQUIVO SHELLSCRIPT : 
+
+DIR=$1
+echo "$DIR"
+if [ -d $DIR ]; then
+echo 'diretorio existente'
+else
+mkdir -p $"DIR/"
+chmod 777 -R "$DIR/"
+fi
+ARQ="texto.txt"
+if [ -e "$ARQ" ]; then
+echo "arquivo existe. será feita uma cópia"
+cp -R "/home/~$/$ARQ" "/home/~$/$DIR/texto.backup.txt"
+cd "$DIR"
+ls
+else
+echo "arquivo não existe"
+fi
+
+- EXECUTANDO:
+
+vim backup.sh
+./backup.sh Backup/Arquivos
+ls
+Area de Trabalho Backup backup.sh Documentos Downloads examples.desktop Imagens Modelos Músicas Público
+cd Backup
+~/Backup$ ls
+~/Backup$ cd Arquivos
+~/Backup/Arquivos$ ls
+textobackup.txt
+~/Backup/Arquivos$ cat textobackup.txt
+milhões
+
+
+
+
+Exercício 5 -
+
+- ARQUIVO SHELLSCRIPT 
+
+if [ $1 = "+" ];
+then
+   soma=$(($2+$3))
+        echo 'SOMA:' $soma
+fi
+
+if [ $1 = "-" ];
+then
+   sub=$(($2-$3))
+        echo 'SUBTRACAO:' $sub
+fi
+
+if [ $1 = "p" ];
+then
+   mult=$(($2\*$3))
+        echo 'MULTIPLICACAO:' $mult
+fi
+
+if [ $1 = "d" ];
+then
+   div=$(($2/$3))
+        echo 'DIVISAO:' $div
+fi
+
+EXECUÇÃO:
+
+aluno@linux0820:~$ sh calc.sh + 2 3 
+SOMA: 5
+
+aluno@linux0820:~$ sh calc.sh - 2 3 
+SUBTRACAO: -1
+
+aluno@linux0820:~$ sh calc.sh p 2 3 
+MULTIPLICACAO: 6
+
+aluno@linux0820:~$ sh calc.sh d 6 2 
+DIVISAO: 3
+
+
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Agenda</string>
+    <string name="dataInicio">Data Início</string>
+    <string name="dataFim">Data Fim</string>
+    <string name="horaInicio">Hora Início</string>
+    <string name="horaFim">Hora Fim</string>
+    <string name="nomeEvento">Nome do Evento</string>
+    <string name="criaEvento">Próximo</string>
+    <string name="dadoOrganizador">Dados do Organizador</string>
+    <string name="nomeOrganizador">Nome</string>
+    <string name="emailOrganizador">E-mail</string>
+    <string name="telOrganizador">Contato</string>
+    <string name="country_code">BR</string>
+    <string name="title_activity_convidados">Convidados</string>
+    <string name="concluir_Evento">Concluir</string>
+    <string name="inserir_cnvd">Inserir Convidado</string>
+    <string name="nome_pessoa">Nome do Convidado</string>
+    <string name="email_pessoa">E-mail do Convidado</string>
+    <string name="telefone_pessoa">Contato do Convidado</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="inserir">Inserir</string>
+    <string name="convidado_inserido_sucesso">Convidado Inserido.</string>
+    <string name="error_insercao_message">Complete os campos em branco.</string>
+    <string name="insercao_cancelada">Inserçao Cancelada.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="convidados">Convidados</string>
+    <string name="voltar_tela">Voltar</string>
+    <string name="evento_criado_sucesso">Evento Criado com Sucesso!</string>
+    <string name="compartilhar_evento">Compartilhe seu evento!</string>
+    <string name="msg_compartilhar">Digite uma mensagem a ser Compartilhada</string>
+
+    <string name="share_invite">Compartilhando</string>
+
+
+    <string name="facebook_app_id">1840908576221692</string>
+</resources>

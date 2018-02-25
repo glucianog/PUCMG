@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mbqc xmlns="http://mbqc.namespaces.minibloq.org" xmlns:minibloq="http://minibloq.org" MinibloqVersion="0.82.Beta">
+    <files/>
+    <properties>
+        <canvas visible="true"/>
+        <blocks count="64"/>
+    </properties>
+    <variables>
+        <chave/>
+        <tempototal/>
+        <tempoverde/>
+        <ciclos/>
+        <tempoamarelo/>
+        <tempovermelho/>
+        <temposeguranca/>
+        <tempopiscar/>
+        <contador/>
+    </variables>
+    <blocks>
+        <ComponentStart function="Flow" commented="false" instanceName="initBoard" paramsCount="0" hasAddParamsButton="false" loadAction="noLoad"/>
+        <VariableInit function="Setter" commented="false" constantValue="chave" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberConstant function="Constant" commented="false" constantValue="0" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="tempototal" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberConstant function="Constant" commented="false" constantValue="20000" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="tempoverde" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberMul function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="tempototal" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <numberConstant function="Constant" commented="false" constantValue="0.40" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberMul>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="ciclos" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberConstant function="Constant" commented="false" constantValue="1000" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="tempoamarelo" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberMul function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="tempototal" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <numberConstant function="Constant" commented="false" constantValue="0.10" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberMul>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="tempovermelho" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberMul function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="tempototal" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <numberConstant function="Constant" commented="false" constantValue="0.35" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberMul>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="temposeguranca" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberMul function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="tempototal" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <numberConstant function="Constant" commented="false" constantValue="0.10" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberMul>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="tempopiscar" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberDiv function="Operation" commented="false" paramsCount="2" hasAddParamsButton="false" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="temposeguranca" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <numberConstant function="Constant" commented="false" constantValue="5" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberDiv>
+        </VariableInit>
+        <VariableInit function="Setter" commented="false" constantValue="contador" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberConstant function="Constant" commented="false" constantValue="0" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </VariableInit>
+        <while function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </while>
+        <Comment function="Code" commented="false" constantValue="Semaforo Pedestre" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <Comment function="Code" commented="false" constantValue="Transicao Verde para Vermelho Pedestre" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <IOPin function="Setter" commented="false" instanceName="D7" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D5" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempopiscar" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <IOPin function="Setter" commented="false" instanceName="D7" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D5" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempopiscar" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <IOPin function="Setter" commented="false" instanceName="D7" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D5" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempopiscar" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <IOPin function="Setter" commented="false" instanceName="D7" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D5" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempopiscar" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <IOPin function="Setter" commented="false" instanceName="D7" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D5" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempopiscar" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <Comment function="Code" commented="false" constantValue="Semaforo Carros" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <Comment function="Code" commented="false" constantValue="D12 = Sinal Verde Carros" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <IOPin function="Setter" commented="false" instanceName="D8" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D10" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D12" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <VariableSetter function="Setter" commented="false" instanceName="contador" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberConstant function="Constant" commented="false" constantValue="0" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </VariableSetter>
+        <VariableSetter function="Setter" commented="false" instanceName="chave" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberBool2Number function="Operation" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+                <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberBool2Number>
+        </VariableSetter>
+        <while function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolAnd function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                <numberLowerThan function="Operation" commented="false" paramsCount="2" hasAddParamsButton="false" loadAction="load">
+                    <VariableGetter function="Getter" commented="false" instanceName="contador" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                    <VariableGetter function="Getter" commented="false" instanceName="ciclos" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                </numberLowerThan>
+                <boolOr function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                    <boolNot function="Operation" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+                        <boolOr function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                            <IOPinGetter function="Getter" commented="false" instanceName="D3" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                            <numberEqual function="Operation" commented="false" paramsCount="2" hasAddParamsButton="false" loadAction="load">
+                                <VariableGetter function="Getter" commented="false" instanceName="chave" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                                <numberBool2Number function="Operation" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+                                    <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                                </numberBool2Number>
+                            </numberEqual>
+                        </boolOr>
+                    </boolNot>
+                    <numberLowerThan function="Operation" commented="false" paramsCount="2" hasAddParamsButton="false" loadAction="load">
+                        <VariableGetter function="Getter" commented="false" instanceName="contador" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                        <numberDiv function="Operation" commented="false" paramsCount="2" hasAddParamsButton="false" loadAction="load">
+                            <VariableGetter function="Getter" commented="false" instanceName="ciclos" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                            <numberConstant function="Constant" commented="false" constantValue="2" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                        </numberDiv>
+                    </numberLowerThan>
+                </boolOr>
+            </boolAnd>
+        </while>
+        <Comment function="Code" commented="false" constantValue="If controlando se a botoeira foi pressionada" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <if function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <IOPinGetter function="Getter" commented="false" instanceName="D3" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </if>
+        <VariableSetter function="Setter" commented="false" instanceName="chave" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberBool2Number function="Operation" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+                <IOPinGetter function="Getter" commented="false" instanceName="D3" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberBool2Number>
+        </VariableSetter>
+        <Comment function="Code" commented="false" constantValue="Valor se botoeira for pressionada -  executar." paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <else function="Flow" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="brother"/>
+        <endIf function="Flow" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="brother"/>
+        <Serial function="Setter" commented="false" instanceName="serial0" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <SerialNumber function="Setter" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="contador" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </SerialNumber>
+        </Serial>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberDiv function="Operation" commented="false" paramsCount="2" hasAddParamsButton="false" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="tempoverde" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <VariableGetter function="Getter" commented="false" instanceName="ciclos" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberDiv>
+        </delay>
+        <VariableSetter function="Setter" commented="false" instanceName="contador" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <numberAdd function="Operation" commented="false" paramsCount="2" hasAddParamsButton="true" loadAction="load">
+                <VariableGetter function="Getter" commented="false" instanceName="contador" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+                <numberConstant function="Constant" commented="false" constantValue="1" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+            </numberAdd>
+        </VariableSetter>
+        <whileEnd function="Flow" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="brother"/>
+        <Comment function="Code" commented="false" constantValue="Tempo controle abotoeira" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <Comment function="Code" commented="false" constantValue="D10 = Sinal Amarelo Carros" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <IOPin function="Setter" commented="false" instanceName="D8" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D10" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D12" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <VariableSetter function="Setter" commented="false" instanceName="contador" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <analogRead function="Getter" commented="false" instanceName="sensor0" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </VariableSetter>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempoamarelo" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <Comment function="Code" commented="false" constantValue="D8 = Sinal Vermelho Carros" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <IOPin function="Setter" commented="false" instanceName="D8" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D10" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D12" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="temposeguranca" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <Comment function="Code" commented="false" constantValue="Tempo que antecede a transição do vermelho ao verde dos carros." paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <Comment function="Code" commented="false" constantValue="Transicao vermelho para verde pedestre" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        <IOPin function="Setter" commented="false" instanceName="D7" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantTrue function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <IOPin function="Setter" commented="false" instanceName="D5" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <boolConstantFalse function="Constant" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </IOPin>
+        <delay function="Flow" commented="false" paramsCount="1" hasAddParamsButton="false" loadAction="load">
+            <VariableGetter function="Getter" commented="false" instanceName="tempovermelho" paramsCount="0" hasAddParamsButton="false" loadAction="load"/>
+        </delay>
+        <whileEnd function="Flow" commented="false" paramsCount="0" hasAddParamsButton="false" loadAction="brother"/>
+    </blocks>
+</mbqc>

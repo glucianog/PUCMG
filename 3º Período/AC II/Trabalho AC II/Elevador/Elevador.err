@@ -1,0 +1,26 @@
+Warning[205] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 2 : Found directive in column 1. (__CONFIG)
+Message[302] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 54 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 56 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 170 : Found label after column 1. (DELAYT)
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 174 : Using default destination of 1 (file).
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 185 : Found label after column 1. (DELAY1A)
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 189 : Using default destination of 1 (file).
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 199 : Found label after column 1. (DELAY2A)
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 203 : Using default destination of 1 (file).
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 214 : Found label after column 1. (DELAY3A)
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 218 : Using default destination of 1 (file).
+Warning[202] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 228 : Argument out of range.  Least significant bits used.
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 233 : Found label after column 1. (ATRASO2)
+Warning[202] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 234 : Argument out of range.  Least significant bits used.
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 236 : Found label after column 1. (ATRASO3)
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 237 : Using default destination of 1 (file).
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 239 : Using default destination of 1 (file).
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 241 : Using default destination of 1 (file).
+Warning[202] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 249 : Argument out of range.  Least significant bits used.
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 254 : Found label after column 1. (ATRASODELAY2)
+Warning[202] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 255 : Argument out of range.  Least significant bits used.
+Warning[207] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 257 : Found label after column 1. (ATRASODELAY3)
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 258 : Using default destination of 1 (file).
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 260 : Using default destination of 1 (file).
+Message[305] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 262 : Using default destination of 1 (file).
+Warning[205] C:\USERS\1031486\DESKTOP\TRABALHO AC2\ELEVADOR.ASM 268 : Found directive in column 1. (END)

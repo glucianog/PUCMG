@@ -1,0 +1,50 @@
+MPLINK 4.35, Linker
+Linker Map File - Created Mon May 22 13:37:09 2017
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x00004c
+ .config_2007_PISCALED3.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000025      
+                            0x002007    0x002007      
+            39 out of 2183 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   ATRASO   0x00000e    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                  ATRASO1   0x000013    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                  ATRASO2   0x00001a    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                  ATRASO3   0x000023    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                     FOR1   0x000018    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                     FOR2   0x000021    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                   INICIO   0x000001    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                     LOOP   0x00000b    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                   REPETE   0x000006    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   INICIO   0x000001    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                   REPETE   0x000006    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                     LOOP   0x00000b    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                   ATRASO   0x00000e    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                  ATRASO1   0x000013    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                     FOR1   0x000018    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                  ATRASO2   0x00001a    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                     FOR2   0x000021    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+                  ATRASO3   0x000023    program     static C:\Users\1031486\Desktop\Prova  LAB AC II\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled3.asm
+
+

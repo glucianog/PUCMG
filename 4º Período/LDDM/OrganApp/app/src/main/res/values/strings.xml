@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">OrganApp</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="copyright">OrganApp Copyright ©</string>
+    <string name="actor">Android Programmer</string>
+    <string name="i_menu_nome">Nome menu desejado</string>
+    <string name="inserir_no_menu">Inserir na Lista</string>
+    <string name="inserir">Inserir</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="conteudo_inserido_sucesso">Conteúdo Inserido com Sucesso</string>
+    <string name="insercao_cancelada">Inserçao Cancelada.</string>
+    <string name="link">Links</string>
+    <string name="i_conteudo">Conteúdo</string>
+    <string name="nome_conteudo">Nome do Conteúdo</string>
+    <string name="title_activity_maps">Map</string>
+
+</resources>

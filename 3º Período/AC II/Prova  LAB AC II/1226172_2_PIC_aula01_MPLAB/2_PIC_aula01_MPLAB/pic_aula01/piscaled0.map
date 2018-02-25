@@ -1,0 +1,36 @@
+MPLINK 4.35, Linker
+Linker Map File - Created Mon May 22 07:59:20 2017
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x000012
+ .config_2007_PISCALED0.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000008      
+                            0x002007    0x002007      
+            10 out of 2183 program addresses used, program memory utilization is 0%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   INICIO   0x000001    program     static C:\Users\1031486\Desktop\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled0.asm
+                   REPETE   0x000006    program     static C:\Users\1031486\Desktop\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled0.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   INICIO   0x000001    program     static C:\Users\1031486\Desktop\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled0.asm
+                   REPETE   0x000006    program     static C:\Users\1031486\Desktop\1226172_2_PIC_aula01_MPLAB\2_PIC_aula01_MPLAB\pic_aula01\piscaled0.asm
+
+

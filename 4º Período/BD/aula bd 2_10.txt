@@ -1,0 +1,853 @@
+Select Autor.CodAut, Autor.NomAut
+	from Autor
+	where not exists
+	(Select *
+	 from Autoria 
+	 inner join Exemplar on Autoria.codObr = Exemplar.codObr
+	 inner join Emprestimo on Exemplar.numExe = Emprestimo.numExe
+	 inner join Usuario on nomUsu like '%Safad�o%' and Usuario.codUsu = Emprestimo.codUsu
+	 where Autoria.CodAut = Autor.codAut)
+order by Autor.nomAut;
+
+
+
+1) Create table Autor2
+	(CodAut number(2) not null,
+	NomAut char(35) not null);
+
+SQL> Create table Autor2
+  2     (CodAut number(2) not null,
+  3     NomAut char(35) not null);
+
+Tabela criada.
+
+
+
+2) Insert into Autor2
+	values (1, 'Jos� Lins do Rego');
+
+
+	SQL> Insert into Autor2
+  	2     values (1, 'Jos� Lins do Rego');
+	1 linha criada.
+
+
+3) Insert into Autor2
+	values (1, 'Auto em duplicada');
+
+	SQL> Insert into Autor2
+  	2     values (1, 'Auto em duplicada');
+
+	1 linha criada.
+
+4) commit;
+
+	SQL> commit;
+
+	Commit conclu�do.
+
+
+
+
+
+
+5) Alter table Autor2
+	add constraint PK_Autor2
+	primary key(codAut);
+
+	Erro -> Pk n�o pode ser a mesma.
+
+	
+	SQL> Alter table Autor2
+  	2     add constraint PK_Autor2
+  	3     primary key(codAut);
+        	add constraint PK_Autor2
+                       *
+	ERRO na linha 2:
+	ORA-02437: n�o � poss�vel validar (GABRIELLUCIANO.PK_AUTOR2) - chave prim�ria
+	violada
+
+
+
+6) Para eliminar os dados em duplicata;
+	Delete from autor2
+		where NomAut < 'B';
+
+	SQL> Delete from autor2
+  	2             where NomAut < 'B';
+
+	1 linha deletada.
+
+
+7) commit;
+
+	SQL> commit;
+
+	Commit conclu�do.
+
+
+8) repetir o 5;
+
+	SQL> Alter table Autor2
+  	2     add constraint PK_Autor2
+  	3     primary key(codAut);
+
+	Tabela alterada.
+
+==================================================================================================================================================================
+
+
+II - Aumentando o tamanho de uma coluna
+
+9 ) inserir em autor
+2 Leando Dupr�
+3 Elmain
+4 Navathe
+5 Jos� Mauro de Vasconcelos
+
+Insert into Autor2
+	values (2, 'Leando Dupr�');
+
+Insert into Autor2
+	values (3, 'Elmain');
+
+Insert into Autor2
+	values (4, 'Navathe');
+
+Insert into Autor2
+values (5, 'Jos� Mauro de Vasconcelos');
+
+
+
+	SQL> Insert into Autor2
+ 	2     values (2, 'Leando Dupr�');
+
+	1 linha criada.
+
+	SQL>
+	SQL> Insert into Autor2
+ 	 2     values (3, 'Elmain');
+
+	1 linha criada.
+
+	SQL>
+	SQL> Insert into Autor2
+  	2     values (4, 'Navathe');
+
+	1 linha criada.
+
+	SQL>
+	SQL> Insert into Autor2
+  	2     values (5, 'Jos� Mauro de Vasconcelos');
+
+	1 linha criada.
+
+
+commit;
+
+
+
+
+	SQL>
+	SQL> commit;
+
+	Commit conclu�do.
+
+10) desc autor2;
+	Alter table autor2
+		modify NomAut char(50);
+
+	desc Autor2;
+
+==================================================================================================================================================================
+
+
+
+
+III - Criando uma nova coluna
+
+12) Select * from autor2;
+	SQL> Select * from autor2;
+
+    	CODAUT NOMAUT
+	---------- -----------------------------------
+         	1 Jos� Lins do Rego
+         	2 Leando Dupr�
+         	3 Elmain
+         	4 Navathe
+         	5 Jos� Mauro de Vasconcelos
+
+13) Alter table Autor2
+	add CodPai number(2)
+	not null;
+    Erro -> Os autores inseridos n�o podem assumir valor nulo
+
+	SQL> Alter table Autor2
+  	2     add CodPai number(2)
+ 	 3     not null;
+	Alter table Autor2
+            *
+	ERRO na linha 1:
+	ORA-01758: a tabela deve estar vazia para incluir a coluna (NOT NULL)
+	obrigat�ria
+
+
+14) Alter table autor2
+	add codPai number(2);
+
+
+	SQL> Alter table autor2
+  	2     add codPai number(2);
+
+	Tabela alterada.
+
+
+    desc Autor2;
+
+15) Update autor2
+	set codPai = 1
+	where codAut in (1,2,5);
+
+
+	SQL>
+	SQL> Update autor2
+  	2     set codPai = 1
+  	3     where codAut in (1,2,5);
+	
+	3 linhas atualizadas.
+
+16) Update autor2
+	set codPai = 6
+	where codaut in (3,4);
+
+
+	SQL> Update autor2
+  	2     set codPai = 6
+  	3     where codaut in (3,4);
+
+	2 linhas atualizadas.
+
+17) Select * from autor2;
+	commit;
+
+18) 	desc autor2;
+	Alter Table autor2
+	modify codPai not null;
+	desc autor2;
+
+	SQL> Alter Table autor2
+  	2     modify codPai not null;
+
+	SQL>    desc autor2;
+ 	Nome                                      Nulo?    Tipo
+ 	----------------------------------------- -------- ----------------------------
+
+ 	CODAUT                                    NOT NULL NUMBER(2)
+ 	NOMAUT                                    NOT NULL CHAR(35)
+ 	CODPAI                                    NOT NULL NUMBER(2)
+
+
+	Tabela alterada.
+
+==================================================================================================================================================================
+IV - Criando um FK
+
+19) alter table autor2
+	add constraint FK_Pais_Autor2
+	foreign Key(codPai) references Pais;
+
+
+	SQL> alter table autor2
+  	2     add constraint FK_Pais_Autor2
+  	3     foreign Key(codPai) references Pais;
+
+	Tabela alterada.
+
+20) Insert into autor2
+	values (10, 'Margarida Schimit', 35);
+
+	SQL> Insert into autor2
+  	2     values (10, 'Margarida Schimit', 35);
+	Insert into autor2
+	*
+	ERRO na linha 1:
+	ORA-02291: restri��o de integridade (GABRIELLUCIANO.FK_PAIS_AUTOR2) violada -
+	chave m�e n�o localizada
+
+
+==================================================================================================================================================================
+
+V - Diminuindo o tamanho de uma coluna
+
+21) alter table Autor2
+	modify NomAut char (35);
+
+	SQL> alter table Autor2
+  	2     modify NomAut char (35);
+
+	Tabela alterada.
+
+    Erro -> Inseguro em truncar dados da coluna. (O QUEDEVERIA ACONTECER)
+
+22) Alter table autor2
+	add nomAut2 char(35);
+
+
+
+
+	SQL> Alter table autor2
+  	2     add nomAut2 char(35);
+
+	Tabela alterada.
+
+	desc autor2;
+
+
+	SQL>    desc autor2;
+ 	Nome                                      Nulo?    Tipo
+ 	----------------------------------------- -------- ----------------------------
+
+ 	CODAUT                                    NOT NULL NUMBER(2)
+ 	NOMAUT                                    NOT NULL CHAR(35)
+ 	CODPAI                                    NOT NULL NUMBER(2)
+ 	NOMAUT2                                            CHAR(35)
+
+23) Update autor2
+	set nomAut2 = substr(nomAut,1,35);
+	commit;
+
+	SQL> Update autor2
+  	2     set nomAut2 = substr(nomAut,1,35);
+
+	5 linhas atualizadas.
+
+	SQL>    commit;
+
+	Commit conclu�do.
+
+	Select * from Autor2;
+
+24) Alter table autor2
+	modify NomAut2 not null;
+	desc autor2;
+
+
+	SQL> Alter table autor2
+  	2     modify NomAut2 not null;
+
+	Tabela alterada.
+
+	SQL>    desc autor2;
+ 	Nome                                      Nulo?    Tipo
+ 	----------------------------------------- -------- ----------------------------
+
+ 	CODAUT                                    NOT NULL NUMBER(2)
+ 	NOMAUT                                    NOT NULL CHAR(35)
+ 	CODPAI                                    NOT NULL NUMBER(2)
+ 	NOMAUT2                                   NOT NULL CHAR(35)
+
+
+==================================================================================================================================================================
+
+
+VI - Eliminando uma coluna
+25) Alter table autor2
+	drop column nomAut;
+	desc autor2;
+
+	SQL> Alter table autor2
+  	2     drop column nomAut;
+
+	Tabela alterada.
+
+	SQL>    desc autor2;
+ 	Nome                                      Nulo?    Tipo
+ 	----------------------------------------- -------- ----------------------------
+
+ 	CODAUT                                    NOT NULL NUMBER(2)
+ 	CODPAI                                    NOT NULL NUMBER(2)
+ 	NOMAUT2                                   NOT NULL CHAR(35)
+
+
+==================================================================================================================================================================
+
+
+
+VII - Renomenando uma coluna
+
+26) desc autor2;
+	Alter table autor2
+	rename column nomaut2 to nomaut;
+	desc autor2;
+
+	SQL> Alter table autor2
+  	2     rename column nomaut2 to nomaut;
+
+	Tabela alterada.
+
+==================================================================================================================================================================
+
+
+
+VIII - Renomeando uma tabela
+1) desc autor2;
+2) rename Autor2 to Troquei;
+
+	SQL> rename Autor2 to Troquei;
+
+	Tabela renomeada.
+
+3) desc autor2; ( objeto n�o existe, pois foi renomeado)
+   desc troquei;
+
+
+	SQL> desc autor2;
+	ERROR:
+	ORA-04043: o objeto autor2 n�o existe
+
+
+	SQL> desc troquei;
+ 	Nome                                      Nulo?    Tipo
+ 	----------------------------------------- -------- ----------------------------
+
+ 	CODAUT                                    NOT NULL NUMBER(2)
+ 	CODPAI                                    NOT NULL NUMBER(2)
+ 	NOMAUT                                    NOT NULL CHAR(35)
+
+
+4) rename troquei to autor2;
+
+
+	SQL> rename troquei to autor2;
+
+	Tabela renomeada.
+
+==================================================================================================================================================================
+
+
+IX  -  APENAS INFORMATIVO
+ Podemos realizar v�rios comandos em uma tabela em um s� alter table
+
+Alter table autor2
+(add col1 char(2), 
+....
+add constraint ...
+mofidy ... ) 
+
+==================================================================================================================================================================
+
+X - Podemos criar uma tabela a partir de outra
+
+	Create table VaiSumir 
+	as Select * from Pais;
+
+	SQL>
+	SQL>    Create table VaiSumir
+  	2     as Select * from Pais;
+
+	Tabela criada.
+
+==================================================================================================================================================================
+
+XI - Eliminando uma tabela
+	desc vaisumir;
+	drop table vaisumir;
+	desc vaisumir; (Objeto n�o existe, pois j� foi deletado) 
+
+	SQL> desc vaisumir;
+ 	Nome                                      Nulo?    Tipo
+ 	----------------------------------------- -------- ----------------------------
+	
+ 	CODPAI                                    NOT NULL NUMBER(2)
+ 	NOMPAI                                    NOT NULL CHAR(30)
+
+
+
+	SQL> drop table vaisumir;
+
+	Tabela eliminada.
+
+	SQL> desc vaisumir;
+	ERROR:
+	ORA-04043: o objeto vaisumir n�o existe
+
+
+==================================================================================================================================================================
+
+
+XII - Create index
+	Pesquisar comando de create index no google
+	Emitir comando
+	Create index INomUsu on Usuario(NomUsu);
+
+	SQL> Create index INomUsu on Usuario(NomUsu);
+
+	-ndice criado.
+
+
+==================================================================================================================================================================
+
+
+XIII - Criar e popular o modelo abaixo
+
+Marca - @CodMar, NomMar ( 8 marcas) 
+
+       || R (1,1) - (0,N)
+       \/
+
+Modelo - @CodMod, NomMod, CodMar  ( 20 modelos) 
+
+ 	|| R (1,1) - (0,N)
+        \/
+
+Ve�culo - @PlaVei, AnoFab, CodMar (50 ve�culos)    Localidade - @codLoc, NomLoc (10 Localidades)    Proprietario - @codPro, NomPro, SexPro
+
+
+	|| R (1,N)                           || R (0,N)                                                || R (0,N)
+        \/                                   \/                                                        \/
+        
+
+HistEmplacamento - @{PlaVei,CodPro,DatIni},DatFim, codLoc
+
+
+
+
+Criar( 8 marcas, 20 modelos, 50 veiculos, 10 localidades, 50 historicos de emplacamentos, 15 proprietarios)
+
+
+	
+
+Create table Marca
+     (CodMar number(2) not null,
+      NomMar char(35) not null, 
+      constraint PK_Marca primary key (CodMar));
+
+
+Create table Modelo
+     (CodMod number(2) not null,
+      NomMod char(35) not null,
+      CodMar number(2) not null, 
+      constraint PK_Modelo primary key (CodMod),
+      constraint FK_Modelo_Marca foreign key (CodMar) 
+      references Marca);
+
+Create table Veiculo
+   	(PlaVei char(7) not null,
+	AnoFab number(4) not null,
+	CodMod number(2) not null,
+	constraint PK_Veiculo primary key(PlaVei),
+	constraint FK_Veiculo_Modelo foreign key(CodMod)
+	references Modelo);
+
+Create table Localidade
+	(CodLoc number(2) not null,
+	NomLoc char(35) not null,
+	constraint PK_Localidade primary key(CodLoc));	
+
+Create table Proprietario
+	(CodPro number(2) not null,
+	NomPro char(35) not null,
+	SexPro char(1) not null,
+	constraint PK_Proprietario primary key(CodPro));
+
+Create table HistEmplacamento
+	(PlaVei char(7) not null,
+	codPro number(2) not null,
+	DatIni date default sysdate,
+	DatFim date,
+	CodLoc number(2) not null,
+	constraint PK_Emplacamento primary key(PlaVei,CodPro,DatIni),
+	constraint FK_Emplacamento_Veiculo foreign key(PlaVei) references Veiculo,
+	constraint FK_Emplacamento_Proprietario foreign key(CodPro) references Proprietario,
+	constraint FK_Emplacamento_Localidade foreign key(CodLoc) references Localidade);
+
+
+ -------------------- MARCAS --------------------
+		(CodMar,NomMar)
+
+Insert into Marca 
+	values(1, 'Volkswagem');
+Insert into Marca 
+	values(2, 'Renault');
+Insert into Marca 
+	values(3, 'Fiat');
+Insert into Marca 
+	values(4, 'Honda');
+Insert into Marca 
+	values(5, 'Peugeot');
+Insert into Marca 
+	values(6, 'BMW');
+Insert into Marca 
+	values(7, 'Hyundai');
+Insert into Marca 
+	values(8, 'Toyota');
+
+ -------------------- LOCALIDADES --------------------
+		(CodLoc,NomLoc)
+
+
+Insert into Localidade
+	values(1, 'Belo Horizonte');
+Insert into Localidade
+	values(2, 'Rio de Janeiro');
+Insert into Localidade
+	values(3, 'S�o Paulo');
+Insert into Localidade
+	values(4, 'Fortaleza');
+Insert into Localidade
+	values(5, 'Curitiba');
+Insert into Localidade
+	values(6, 'Florian�polis');
+Insert into Localidade
+	values(7, 'Goi�nia');
+Insert into Localidade
+	values(8, 'Bras�lia');
+Insert into Localidade
+	values(9, 'Tr�s Marias');
+Insert into Localidade
+	values(10, 'Recife');
+
+
+
+ -------------------- PROPRIET�RIO --------------------
+		(CodPro,NomPro,SexPro)
+
+
+Insert into Proprietario
+	values(1,'Maria Joaquina','F');
+Insert into Proprietario
+	values(2,'Evaristo Costa','M');
+Insert into Proprietario
+	values(3,'Ana Maria Braga','F');
+Insert into Proprietario
+	values(4,'Fausto Silva','M');
+Insert into Proprietario
+	values(5,'Caio Ribeiro','M');
+Insert into Proprietario
+	values(6,'Nicole Bahls','F');
+Insert into Proprietario
+	values(7,'Roberto Carlos','M');
+Insert into Proprietario
+	values(8,'Renato Arag�o','F');
+Insert into Proprietario
+	values(9,'Xuxa Meneguel','F');
+Insert into Proprietario
+	values(10,'William Bonner','M');
+Insert into Proprietario
+	values(11,'Wesley Safad�o','M');
+Insert into Proprietario
+	values(12,'John Lennon','M');
+Insert into Proprietario
+	values (13,'Edson Arantes','M');
+Insert into Proprietario
+	values (14,'Miraildes Maciel Mota','F');
+Insert into Proprietario
+	values(15,'Thayane Safad�o','F');
+
+
+
+ -------------------- MODELO --------------------
+ 		(CodMod,NomMod,CodMar)
+
+Insert into Modelo values(1,'UP!',1);
+Insert into Modelo values(2,'Palio',3);
+Insert into Modelo values(3,'X3',6);
+Insert into Modelo values(4,'X1',6);
+Insert into Modelo values(5,'Voyage',1);
+Insert into Modelo values(6,'Fiorino',3);
+Insert into Modelo values(7,'307',5);
+Insert into Modelo values(8,'HB20',7);
+Insert into Modelo values(9,'Gol',1);
+Insert into Modelo values(10,'Jetta',1);
+Insert into Modelo values(11,'Civic',4);
+Insert into Modelo values(12,'Fit',4);
+Insert into Modelo values(13,'City',4);
+Insert into Modelo values(14,'Sandero',2);
+Insert into Modelo values(15,'Stepway',2);
+Insert into Modelo values(16,'Logan',4);
+Insert into Modelo values(17,'208',5);
+Insert into Modelo values(18,'207',5);
+Insert into Modelo values(19,'Uno',3);
+Insert into Modelo values(20,'Palio',3);
+
+
+
+
+ -------------------- VEICULO --------------------
+		(PlaVei, AnoFab, CodMod)
+
+Insert into Veiculo values('ABC0001', 2010, 1);
+Insert into Veiculo values('ABC0002', 2010, 1);
+Insert into Veiculo values('CBA0003', 2010, 1);
+Insert into Veiculo values('CBA0004', 2010, 1);
+Insert into Veiculo values('DBA0005', 2010, 1);
+Insert into Veiculo values('DBA0006', 2010, 1);
+Insert into Veiculo values('DBA0007', 2010, 1);
+Insert into Veiculo values('DBA0008', 2010, 1);
+Insert into Veiculo values('DBA0009', 2010, 1);
+Insert into Veiculo values('DBA0010', 2015, 1);
+Insert into Veiculo values('DBA0011', 2015, 1);
+Insert into Veiculo values('DBA0012', 2015, 2);
+Insert into Veiculo values('DBA6013', 2015, 2);
+Insert into Veiculo values('DBA6014', 2015, 2);
+Insert into Veiculo values('DBA6015', 2015, 2);
+Insert into Veiculo values('GTA6016', 2015, 2);
+Insert into Veiculo values('GTA6017', 2015, 2);
+Insert into Veiculo values('GTA6018', 2015, 2);
+Insert into Veiculo values('GTA6019', 2015, 2);
+Insert into Veiculo values('GTA6020', 2017, 2);
+Insert into Veiculo values('FBB7021', 2017, 2);
+Insert into Veiculo values('FBB7022', 2017, 3);
+Insert into Veiculo values('FBB7023', 2017, 3);
+Insert into Veiculo values('FBB7024', 2017, 3);
+Insert into Veiculo values('FBB7025', 2017, 3);
+Insert into Veiculo values('FBB7026', 2017, 3);
+Insert into Veiculo values('FBB7027', 2017, 3);
+Insert into Veiculo values('FBB7028', 2017, 3);
+Insert into Veiculo values('FBB7029', 2017, 3);
+Insert into Veiculo values('TCC7030', 2017, 3);
+Insert into Veiculo values('TCC7031', 2017, 3);
+Insert into Veiculo values('TCC7032', 2017, 4);
+Insert into Veiculo values('TCC7033', 2017, 4);
+Insert into Veiculo values('TCC7034', 2017, 4);
+Insert into Veiculo values('TCC7035', 2017, 4);
+Insert into Veiculo values('TCC7036', 2017, 4);
+Insert into Veiculo values('TCC7037', 2017, 4);
+Insert into Veiculo values('TCC7038', 2017, 4);
+Insert into Veiculo values('TCC7039', 2017, 4);
+Insert into Veiculo values('TCV7040', 2017, 4);
+Insert into Veiculo values('TCV7041', 2017, 4);
+Insert into Veiculo values('TCV7042', 2017, 5);
+Insert into Veiculo values('TCV7043', 2017, 5);
+Insert into Veiculo values('TCV7044', 2017, 5);
+Insert into Veiculo values('TCV7045', 2017, 5);
+Insert into Veiculo values('TCV7046', 2017, 5);
+Insert into Veiculo values('TCV7047', 2017, 5);
+Insert into Veiculo values('TCV7048', 2017, 5);
+Insert into Veiculo values('TCV7049', 2017, 5);
+Insert into Veiculo values('TCW8050', 2017, 5);
+
+
+
+
+
+
+
+                   
+
+ -------------------- HIST�RICO EMPLCAMENTO --------------------
+ 		(PlaVei, CodPro, DatIni,DatFim,CodLoc)
+
+
+Insert into HistEmplacamento values('ABC0001',1 , 20100302,NULL, 1);
+Insert into HistEmplacamento values('ABC0002',1 , 20100910,NULL, 2);
+Insert into HistEmplacamento values('CBA0003',2 , 20100101,NULL, 3);
+Insert into HistEmplacamento values('CBA0004',2 , 20150606,NULL, 4);
+Insert into HistEmplacamento values('DBA0005',3 , 20100101,NULL, 5);
+Insert into HistEmplacamento values('DBA0006',3 , 20150503,NULL, 6);
+Insert into HistEmplacamento values('DBA0007',4 , 20130108,NULL, 7);
+Insert into HistEmplacamento values('DBA0008',4 , 20140108,NULL, 8);
+Insert into HistEmplacamento values('DBA0009',5 , 20150909,NULL, 9);
+Insert into HistEmplacamento values('DBA0010',5 , 20150101,NULL, 1);
+Insert into HistEmplacamento values('DBA0011',6 , 20150202,NULL, 2);
+Insert into HistEmplacamento values('DBA0012',6 , 20150303,NULL, 3);
+Insert into HistEmplacamento values('DBA6013',7 , 20150404,NULL, 4);
+Insert into HistEmplacamento values('DBA6014',7 , 20150505,NULL, 5);
+Insert into HistEmplacamento values('DBA6015',8 , 20150606,NULL, 6);
+Insert into HistEmplacamento values('GTA6016',8 , 20150707,NULL, 7);
+Insert into HistEmplacamento values('GTA6017',9 , 20150808,NULL, 8);
+Insert into HistEmplacamento values('GTA6018',9 , 20150909,NULL, 9);
+Insert into HistEmplacamento values('GTA6019',10, 20151010,NULL, 10);
+Insert into HistEmplacamento values('GTA6020',10, 20170101,NULL, 1);
+Insert into HistEmplacamento values('FBB7021',11, 20170202,NULL, 2);
+Insert into HistEmplacamento values('FBB7022',11, 20170303,NULL, 3);
+Insert into HistEmplacamento values('FBB7023',12, 20170404,NULL, 4);
+Insert into HistEmplacamento values('FBB7024',12, 20170505,NULL, 5);
+Insert into HistEmplacamento values('FBB7025',13, 20170606,NULL, 6);
+Insert into HistEmplacamento values('FBB7026',13, 20170707,NULL, 7);
+Insert into HistEmplacamento values('FBB7027',14, 20170808,NULL, 8);
+Insert into HistEmplacamento values('FBB7028',14, 20170909,NULL, 9);
+Insert into HistEmplacamento values('FBB7029',15, 20171001,NULL, 10);
+Insert into HistEmplacamento values('TCC7030',15, 20170101,NULL, 1);
+Insert into HistEmplacamento values('TCC7031',1 , 20170220,NULL, 2);
+Insert into HistEmplacamento values('TCC7032',1 , 20170330,NULL, 3);
+Insert into HistEmplacamento values('TCC7033',2 , 20170425,NULL, 5);
+Insert into HistEmplacamento values('TCC7034',2 , 20170615,NULL, 6);
+Insert into HistEmplacamento values('TCC7035',3 , 20170717,NULL, 7);
+Insert into HistEmplacamento values('TCC7036',3 , 20170818,NULL, 8);
+Insert into HistEmplacamento values('TCC7037',4 , 20170919,NULL, 9);
+Insert into HistEmplacamento values('TCC7038',4 , 20171005,NULL, 10);
+Insert into HistEmplacamento values('TCC7039',5 , 20171001,NULL, 1);
+Insert into HistEmplacamento values('TCV7040',5 , 20170222,NULL, 2);
+Insert into HistEmplacamento values('TCV7041',6 , 20170328,NULL, 3);
+Insert into HistEmplacamento values('TCV7042',6 , 20170422,NULL, 4);
+Insert into HistEmplacamento values('TCV7043',7 , 20170513,NULL, 5);
+Insert into HistEmplacamento values('TCV7044',7 , 20170628,NULL, 6);
+Insert into HistEmplacamento values('TCV7045',8 , 20170717,NULL, 7);
+Insert into HistEmplacamento values('TCV7046',8 , 20170828,NULL, 8);
+Insert into HistEmplacamento values('TCV7047',9 , 20170911,NULL, 9);
+Insert into HistEmplacamento values('TCV7048',9 , 20171012,NULL, 10);
+Insert into HistEmplacamento values('TCV7049',10, 20170122,NULL, 1);
+Insert into HistEmplacamento values('TCW8050',10, 20170208,NULL, 2);
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

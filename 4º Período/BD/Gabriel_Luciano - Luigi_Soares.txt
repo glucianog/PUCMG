@@ -1,0 +1,257 @@
+2 - a) A vantagem de um SGBD Objeto-Relacional é que ele é mais confiável e mais eficiente, se comparado à maioria dos SGBDOO. Isso se dá devido à possibilidade de criar tipos de dados adicionais e depois fazer referência a esses tipos de dados dentro de outros objetos, além da persistência de dados, pois as regras de rotinas para tratamento de persistência dos dados podem ser criadas no próprio banco de dados Relacional. Por outro lado, no SBGDOO a abstração da realidade é mais simplificada, pois um objeto é uma referência direta da realidade. Além da reutilização, visto que um objeto pode ser facilmente reutilizado em uma outra instância no mesmo programa.
+Agora, em relação às desvantagens, o SGBD-OO é mais preocupante. Enquanto o SGBDOR só apresenta preocupações no momento de definição e abstração das chaves primárias e estrangeiras, o SBGDOO acarreta vários problemas da orientação a objetos. Este é prejudicado pois os bancos de dados atuais não conseguem substituir a tecnologia eficiente dos bancos de dados relacionais. Junto a isso, os desenvolvedores do SGBDOO devem dar uma ‘freada’ e voltar a usar conceitos relacionais, mesmo estando em um sistema OO. Concomitantemente a isso, implementações acabam se tornando mais complicadas, pois de divergem do estilo Objeto-Relacional ao Orientado a Objeto.
+
+b) Eles permitem representação de relacionamentos 1-n, n-n e de herança, pois adotam as técnicas de orientação a objeto e conseguem abstrair os conceitos de totalidade e generalização.
+A representação de um relacionamento é feita incluindo-se dentro de um objeto, os “Object Identifiers” dos outros objetos com os quais eles se relacionam. Sendo que esses ‘Object Identifiers’ são identificadores exclusivamente internos que o BD adota para cada objeto. 
+Não possuem um padrão único de implementação como os bancos relacionais. Assim, cada produto tem a sua própria especificação para criação de classes e relacionamentos. Fazendo presente a utilização de orientação a objetos.
+
+c) Um BDOR é um banco que permite o armazenamento de objetos em suas tabelas. Isso porque ele cria uma referência do objeto na tabela, facilitando o acesso direto a esse item.
+Uma classe representa um domínio, atuando como um data type para uma coluna. A classe, diferentemente dos bancos orientados a objetos, não representa mais um elemento envolvido em relacionamentos. 
+Todas as regras de um banco relacional continuam válidas, pois ele se baseia em sua estrutura.
+Uma coluna cujo data type seja uma classe, só poderá ter uma instância desta classe. 
+
+d)   1 - Toda tabela deve ter uma chave primária, visto que cada objeto é único no sistema. Sendo que essa unicidade é garantida pelo identificador de objetos (OID), o qual é registrado pelo sistema e não pode ser alterado pelo usuário.
+2 – Atributos simples são mapeados para colunas, atributos compostos devem ser mapeados em várias colunas e atributos multivalorados devem ser mapeados em tabelas onde a chave primária é composta pela chave primária da tabela que representa a classe que contém o atributo multivalorado e pela chave primária que representa o atributo multivalorado.
+3 – Em herança, cada classe é representada por uma tabela (técnica mais demorada, pois são geradas muitas tabelas, dificultando a leitura e gravar os dados), ou criar uma única tabela para toda a hierarquia de classes. Além disso, pode se criar uma tabela para cada classe concreta.
+4 – Na associação muitos-para-muitos deve ser criada uma tabela associativa em que a chave primária é composta pelas chaves primárias das tabelas associadas.
+5 – Associações Muitos-para-muitos com classe associativa assume as regras da associação muitos-para-muitos e os atributos da classe associativa permanecerão na tabela que é gerada para mapear a associação. 
+6 – Associações Um-para-muitos a tabela que pode ser endereçada diversas vezes recebe a referência da tabela cuja correspondência é unitária.
+7 – Associações um-para-muitos com classe de associação adotam os mesmos princípios das associações um-para-muitos e os atributos da classe associativa são herdados como atributos normais pela tabela que herda a chave estrangeira.
+8 – Associações um-para-um deve-se optar por gerar uma única tabela no modelo relacional (atributos da classe agregara devem ser colocados na mesma tabela da classe que agrega – Possui melhor performance), ou uma tabela para cada classe (uma das tabelas deve herdar como chave estrangeira, a chave primária da outra tabela (facilita manutenção de tabelas, mas consultas necessitam de uma operação join). 
+
+3)
+
+1 - create type t_endereco as object (
+	rua varchar2(40),
+	cidade varchar2(30),
+	uf char(2),cep number(8) );
+/
+
+Tipo criado.
+
+
+2 - create type t_funcionario as object (
+	matricula number(5),
+	nome varchar2(30),
+	data_admissao date,
+	endereco t_endereco);
+/
+
+Tipo criado.
+
+
+3 - create table funcionarios of t_funcionario;
+
+insert into funcionarios values(1574,'Luigi', '11012017', t_endereco('Rua azul','BH','MG','30145214'));
+
+declare
+	v_funcionario t_funcionario;
+    begin
+	  select value(f) into v_funcionario
+		from funcionarios f
+		where matricula = 1574;
+		dbms_output.put_line (v_funcionario.nome);
+    end;
+/
+
+
+Procedimento PL/SQL concluÝdo com sucesso.
+
+
+4 - create type t_departamento as object (
+	num_depto number,
+	nome varchar2(30),
+	endereco t_endereco );
+/
+
+Tipo criado.
+
+create table departamentos of t_departamento;
+
+Tabela criada.
+
+create table funcionarios2 (
+	matricula number,
+	nome varchar2(30),
+	depto ref t_departamento);
+
+Tabela criada.
+
+
+5 -
+
+    create table funcionarios3 (
+	matricula number,
+	nome varchar2(30),
+	depto ref t_departamento scope is
+	departamentos);
+
+
+Tabela criada.
+
+6 - create type t_pessoa as object (
+	nome varchar2(30),
+	endereco t_endereco,
+	data_nasc date,
+	amigo REF t_pessoa);
+/
+Tipo criado.
+
+
+7 - insert into departamentos values
+	(1, ‘ITP’, t_endereco (‘Rua José Seabra, 255’,
+	‘Aracaju’, ‘SE’, 49000000));
+
+1 linha criada.
+
+	insert into funcionarios3 values
+	(4036, ‘Beatriz’, (select ref(d) from departamentos d
+	where d.nome=’ITP’));
+
+1 linha criada.
+
+8 - declare
+  	v_depto t_departamento;
+  	v_nome_depto varchar2(30);
+  begin
+  	select deref(depto) into v_depto
+  	  from funcionarios3
+  	  where nome='Beatriz';
+
+  	select v_depto.nome into v_nome_depto
+  	  from dual;
+  end;
+  /
+
+Procedimento PL/SQL concluÝdo com sucesso.
+
+9 - create or replace trigger departamento_d
+	after delete on departamentos
+	for each row
+	declare
+		d_ref REF t_departamento;
+	begin
+		select REF(d) into d_ref from departamentos d
+		where d.num_depto=:old.num_depto;
+		update funcionarios f set f.depto = null
+		where f.depto = d_ref;
+	end;
+/
+
+Gatilho criado.
+
+
+10 - create type t_livro as object (
+	numero number(4),
+	titulo varchar2(40));
+/
+Tipo criado.
+
+
+	create type lista_livros as table of t_livro;
+/
+Tipo criado.
+
+     create table material_disciplina (
+	departamento char(4),
+	curso number(3),
+	livros_requeridos lista_livros)
+	nested table livros_requeridos store
+	as livros_requeridos_tab;
+
+Tabela criada.
+
+11 - insert into material_disciplina 
+	values ('ccft',10,
+	lista_livros (
+	t_livro (1, 'Oracle 91'),
+	t_livro (2, 'Oracle 81') )) ;
+
+1 linha criada.
+
+12 - select l.titulo
+	from material_disciplina m,
+	table(m.livros_requeridos) l
+	where m.departamento=’ccft’ and m.curso=10;
+
+TITULO
+----------------------------------------
+Oracle 91
+Oracle 81		
+
+
+13 - create type t_funcionario as object (
+	nome varchar2(30),
+	data_nasc date,
+	member function idade return integer,
+	member procedure altera_nome(p_nome IN
+	varchar2),
+	map member function retornar_nome return
+	varchar2,
+	order member function comparar_func (p_func in
+	t_funcionario ) return number);
+/
+
+Tipo criado.
+
+14 - create type body t_funcionario is
+	member function idade return integer is
+	I integer;
+	begin
+		select trunc(months_between
+		(sysdate,self.data_nasc) / 12) into I
+		from dual;
+	end;
+		member procedure altera_nome (p_nome IN varchar2) is
+	begin
+		nome := p_nome;
+	end;
+     end;
+/
+
+Tipo criado.
+
+
+15 - create type t_pessoa2 as object
+	(codigo number,
+	nome varchar2(30),
+	endereco varchar2(100)) not final;
+/
+
+Tipo criado.
+
+16 - create type t_estudante under t_pessoa2 (
+  	cod_dep number,
+  	disciplina_principal varchar2(30)
+  ) not final;
+/
+
+Tipo criado.
+
+	create type t_empregado under t_pessoa2
+	(cod_emp number,
+	setor varchar2(30));
+/
+
+Tipo criado.
+
+17 - create table pessoas2 of t_pessoa;
+
+	Tabela criada.
+
+
+--     create table empregados of t_empregado
+--	under t_pessoa2;
+ 
+ORA-03001: recurso nÒo implementado
+
+--     create table empregados of t_empregado
+--	under t_pessoa2;
+
+ORA-03001: recurso nÒo implementado
+
+
+
+-- PARA DELETAR TYPO 
+-- DROP TYPE NOME_DO_TIPO FORCE;
+	
