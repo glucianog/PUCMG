@@ -1,0 +1,1 @@
+g++ -o a.exe AdjacencyMatrix.cpp 11710ExpensiveSubway.cpp
