@@ -1,3 +1,9 @@
+/**
+ * UVA 11710 Challenge - Expensive Subway
+ * Developed by Gabriel Luciano
+ * on March,31th,2018
+ **/
+
 #include <iostream>
 #include <cstring>
 #include <list>
@@ -164,6 +170,7 @@ int buildGraph(int nStations, int nConections) {
 
     // Need to be replaces by am->isConnect(); 
     // For a unrecognized reason it's not working.
+    
     if( nConections < nStations - 1 ) {
         cout << "Impossible\n";
     } else {        
