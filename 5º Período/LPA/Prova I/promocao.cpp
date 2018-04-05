@@ -11,7 +11,6 @@ struct produto {
     }
 };
 
-
 int calculaTotalProdutos(int nTestes) {
   vector<produto> lProdutos;
   
@@ -33,15 +32,12 @@ int calculaTotalProdutos(int nTestes) {
     if ( lProdutos[i].peso < pesoMax ) {
       pesoMax = pesoMax - lProdutos[i].peso;
       tProdutos = tProdutos + lProdutos[i].valor;
-    }
-    
+    }    
   }
   
   return tProdutos;
   
 }
-
-
 
 int main() {
   
@@ -50,8 +46,7 @@ int main() {
   while(true) {
     cin >> nTestes;
     if ( nTestes == 0) break;
-    cout << calculaTotalProdutos(nTestes)  << endl;
-    
+    cout << calculaTotalProdutos(nTestes)  << endl;    
   }
   
   return 0;
