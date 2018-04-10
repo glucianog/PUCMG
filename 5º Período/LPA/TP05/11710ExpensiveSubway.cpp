@@ -25,6 +25,42 @@ bool wasProsseced(short colours[], short size) {
     return resp;
 }
 
+
+bool BFS (short nStations, AdjacencyMatrix* am, short s) {
+    bool resp = true;
+    list<int> q;
+    bool visited[nStations];
+    for( int i = 0 ; i < nStations;i ++ ){
+        visited[i] = false;        
+    }    
+    visited[s] = true;
+    q.push_back(s); 
+    
+    while(!q.empty()) {
+        int u = q.front();
+        q.pop_front();
+
+        for(int i = 0; i < nStations; i++ ){
+            if(am->getEdge(u,i) == 1){
+                if(!visited[i]) {
+                    visited[i] = true;
+                    q.push_back(i);
+                }                
+            }                
+        }        
+    }
+
+    for(int i = 0 ; i < nStations; i++ ){
+        if(visited[i] == false) {
+            resp = false;
+            i = nStations;
+        }
+    }
+
+    return resp;
+
+}
+
 short minKey(short key[], bool mstSet[], short V)
 {
     // Initialize min value
@@ -40,17 +76,28 @@ short minKey(short key[], bool mstSet[], short V)
 }
 
 
+int getCandidate(AdjacencyMatrix* am, int nStations, int position ) {
+    int aux = MAX, resp;
+    for(int i = 0 ; i < nStations; i++ ){
+        if(am->getValue(position,i) != 0  && am->getValue(position,i) < aux){
+            aux = am->getValue(position,i);
+            resp = i;
+        }
+    }
+    return resp;
+}
+
     /**
      * Method developed by Sanfoundry Global Education & Learning Series
      * accessed on March,31th, 2018.
      * Available at https://www.sanfoundry.com/cpp-program-apply-prims-algorithm-find-minimum-spanning-tree-graph/
      * 
      */
-int PrimAlgorithm(AdjacencyMatrix* am, int nStations, int iniPoint) {
+int PrimAlgorithm(AdjacencyMatrix* am, int nStations, int iniPoint) {    
     short parent[nStations]; // Stores constructed MST
     short keys[nStations]; // used to pick minimum weight
     bool mstSet[nStations]; // vertices not yet included  in MST
-    short total = 0; // minimum Way
+    short total = 0, aux = 0; // minimum Way
 
     for( short i = 0; i < nStations; i++ ) {
         keys[i] = MAX;
@@ -85,50 +132,10 @@ int PrimAlgorithm(AdjacencyMatrix* am, int nStations, int iniPoint) {
     }
 
     for (short i = 1; i < nStations; i++ ) {
-        total = total + am->getValue(i,parent[i]);
-    }
+        total = total + am->getValue(i,parent[i]);             
+    }    
 
-
-    // short colours[nStations], keys[nStations],minValue;
-    // int total;
-    // short i, j;
-    // for( i = 0 ; i < nStations; i++ ) { 
-    //     colours[i] = 0;       
-    //     for( j = 0; j < nStations; j++ ) {
-    //        if( am->getValue(i,j) == 0 ) {
-    //            am->addEdge(i,j,MAX);
-    //        }           
-    //     }
-             
-    //     keys[i] = am->getValue(iniPoint,i);
-    // }    
-
-    // colours[iniPoint] = 1;
-    // total = 0;
-
-    // while(!wasProsseced(colours,nStations)) {
-    //     minValue = MAX; 
-    //     for( short k = 0 ; k < nStations; k++ ) {
-    //         if ((colours[k] == 0) && (keys[k] < minValue)) {
-    //             minValue = am->getValue(i,j);
-    //             j = k;
-    //         }           
-    //     }
-
-    //     if ( minValue == MAX ) {
-    //         break;
-    //     }
-
-    //     total = total + minValue;
-    //     colours[j] = 1;  
-    //     for(short k = 0; k < nStations; k++ ) {
-    //         if((colours[k] == 0) && (am->getValue(j,k) < minValue)){
-    //             keys[k] = am->getValue(j,k); 
-    //         }
-    //     } 
-    // } 
-
-     return total;  
+    return total;  
 }
 
 int buildGraph(int nStations, int nConections) {
@@ -165,19 +172,11 @@ int buildGraph(int nStations, int nConections) {
         }           
     }  
 
-    //am->print();
-
-
-    // Need to be replaces by am->isConnect(); 
-    // For a unrecognized reason it's not working.
-    
-    if( nConections < nStations - 1 ) {
+    if(BFS(nStations,am,position1)) {
+        cout << PrimAlgorithm(am,nStations,position1) << endl;
+    } else {
         cout << "Impossible\n";
-    } else {        
-        cout << PrimAlgorithm(am,nStations,position1) << endl;        
     }
-
-    
     
 
     free(am);
