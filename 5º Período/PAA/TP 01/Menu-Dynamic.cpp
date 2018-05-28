@@ -109,7 +109,7 @@ void buildMenu(int n, vector<int> &c, vector<int> &b) {
 }
 
 int main() {
-  freopen("pub.in","r",stdin);
+  //freopen("pub.in","r",stdin);
   int days, ndish, budget;
   cin >> days >> ndish >> budget;
   while( days!= 0 && ndish != 0 && budget!= 0){

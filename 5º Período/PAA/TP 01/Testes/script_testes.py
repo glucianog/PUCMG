@@ -4,49 +4,54 @@ import plotly.graph_objs as go
 import subprocess
 import time
 
-path = "c:/Users/gabri/Desktop/PUCMG/5º Período/PAA/TP 01/"
+path = "c:/Users/gabri/Desktop/PUCMG/5º Período/PAA/TP 01/Testes/"
 greedy_exe = path + "greedy.exe"
 dp_exe = path + "dp.exe"
 
-dias = [3, 6, 9, 12, 15]
-pratos = [2, 4, 6, 8, 10]
-orcamento = [20, 40, 60, 80, 100]
 
-greedy_time = [0 for i in range(5)]
-dp_time = [0 for i in range(5)]
+days = [i for i in range(1, 22)]
+dishes = [i for i in range(1, 51)]
+budget = [i for i in range(0, 101)]
+
+max_days = days[len(days) - 1]
+max_dishes = dishes[len(dishes) - 1]
+max_budget = budget[len(budget) - 1]
+
+greedy_time = [0 for i in range(len(days))]
+dp_time = [0 for i in range(len(days))]
 
 i = 0
 # Variando quantidade de dias
-for dia in dias:
+for day in days:
     for j in range(20):
-        input_file = open("inputs/pub_{0}_{1}_{2}.in".format(dia, pratos[0], orcamento[0]))
+        input_file = open("inputs/{}_{}_{}.in".format(day, max_dishes, max_budget))
         start_time = time.time()
         subprocess.run([greedy_exe], stdin=input_file, stdout=subprocess.PIPE)
-        end_time = time.time()
-        greedy_time[i] += (end_time - start_time) / 5.0
+        end_time = time.time();
+        greedy_time[i] += (end_time - start_time);
     greedy_time[i] /= 20.0
     i += 1
 
 
 i = 0
-for dia in dias:
+for day in days:
     for j in range(20):
-        input_file = open("inputs/pub_{0}_{1}_{2}.in".format(dia, pratos[0], orcamento[0]))
+        input_file = open("inputs/{}_{}_{}.in".format(day, max_dishes, max_budget))
         start_time = time.time()
-        subprocess.run([dp_exe], shell=True, stdin=input_file, stdout=subprocess.PIPE)
-        end_time = time.time()
-        dp_time[i] += (end_time - start_time) / 5.0
+        subprocess.run([dp_exe], stdin=input_file, stdout=subprocess.PIPE)
+        end_time = time.time();
+        dp_time[i] += (end_time - start_time);
     dp_time[i] /= 20.0
     i += 1
 
 trace_greedy = go.Scatter(
-    x=dias,
+    x=days,
     y=greedy_time,
     name="Guloso"
 )
 
 trace_dp = go.Scatter(
-    x=dias,
+    x=days,
     y=dp_time,
     name="Dinâmico"
 )
@@ -59,55 +64,53 @@ layout = go.Layout(
             family="Arial, sans-serif",
             size=18,
         ),
-        range=[0, 16]
     ),
     yaxis=dict(
-        title="Tempo de execução",
+        title="Tempo de execução (em segundos) ",
          titlefont=dict(
             family="Arial, sans-serif",
             size=18,
         ),
-        range=[0, 0.015]
     )
 )
 figure = go.Figure(data=data, layout=layout)
-py.plot(figure, filename=path + "outputs/dias.html")
+py.plot(figure, filename=path + "outputs/days.html")
 
 # Variando quantidade de pratos
-greedy_time = [0 for i in range(5)]
-dp_time = [0 for i in range(5)]
+greedy_time = [0 for i in range(len(dishes))]
+dp_time = [0 for i in range(len(dishes))]
 
 i = 0
-for prato in pratos:
+for dish in dishes:
     for j in range(20):
-        input_file = open("inputs/pub_{0}_{1}_{2}.in".format(dias[0], prato, orcamento[0]))
+        input_file = open("inputs/{}_{}_{}.in".format(max_days, dish, max_budget))
         start_time = time.time()
-        subprocess.run([greedy_exe], shell=True, stdin=input_file, stdout=subprocess.PIPE)
-        end_time = time.time()
-        greedy_time[i] += (end_time - start_time) / 5.0
+        subprocess.run([greedy_exe], stdin=input_file, stdout=subprocess.PIPE)
+        end_time = time.time();
+        greedy_time[i] += (end_time - start_time);
     greedy_time[i] /= 20.0
     i += 1
 
 
 i = 0
-for prato in pratos:
+for dish in dishes:
     for j in range(20):
-        input_file = open("inputs/pub_{0}_{1}_{2}.in".format(dias[0], prato, orcamento[0]))
+        input_file = open("inputs/{}_{}_{}.in".format(max_days, dish, max_budget))
         start_time = time.time()
-        subprocess.run([dp_exe], shell=True, stdin=input_file, stdout=subprocess.PIPE)
-        end_time = time.time()
-        dp_time[i] += (end_time - start_time) / 5.0
+        subprocess.run([dp_exe], stdin=input_file, stdout=subprocess.PIPE)
+        end_time = time.time();
+        dp_time[i] += (end_time - start_time);
     dp_time[i] /= 20.0
     i += 1
 
 trace_greedy = go.Scatter(
-    x=pratos,
+    x=dishes,
     y=greedy_time,
     name="Guloso"
 )
 
 trace_dp = go.Scatter(
-    x=pratos,
+    x=dishes,
     y=dp_time,
     name="Dinâmico"
 )
@@ -120,56 +123,54 @@ layout = go.Layout(
             family="Arial, sans-serif",
             size=18,
         ),
-        range=[0, 11]
     ),
     yaxis=dict(
-        title="Tempo de execução",
+        title="Tempo de execução (em segundos) ",
          titlefont=dict(
             family="Arial, sans-serif",
             size=18,
         ),
-        range=[0, 0.015]
     )
 )
 figure = go.Figure(data=data, layout=layout)
-py.plot(figure, filename=path + "outputs/pratos.html")
+py.plot(figure, filename=path + "outputs/dishes.html")
 
 
-# Variando orcamento
-greedy_time = [0 for i in range(5)]
-dp_time = [0 for i in range(5)]
+# Variando orçamento
+greedy_time = [0 for i in range(len(budget))]
+dp_time = [0 for i in range(len(budget))]
 
 i = 0
-for orc in orcamento:
+for b in budget:
     for j in range(20):
-        input_file = open("inputs/pub_{0}_{1}_{2}.in".format(dias[0], pratos[0], orc))
+        input_file = open("inputs/{}_{}_{}.in".format(max_days, max_dishes, b))
         start_time = time.time()
-        subprocess.run([greedy_exe], shell=True, stdin=input_file, stdout=subprocess.PIPE)
-        end_time = time.time()
-        greedy_time[i] += (end_time - start_time) / 5.0
+        subprocess.run([greedy_exe], stdin=input_file, stdout=subprocess.PIPE)
+        end_time = time.time();
+        greedy_time[i] += (end_time - start_time);
     greedy_time[i] /= 20.0
     i += 1
 
 
 i = 0
-for orc in orcamento:
+for b in budget:
     for j in range(20):
-        input_file = open("inputs/pub_{0}_{1}_{2}.in".format(dias[0], pratos[0], orc))
+        input_file = open("inputs/{}_{}_{}.in".format(max_days, max_dishes, b))
         start_time = time.time()
-        subprocess.run([dp_exe], shell=True, stdin=input_file, stdout=subprocess.PIPE)
-        end_time = time.time()
-        dp_time[i] += (end_time - start_time) / 5.0
+        subprocess.run([dp_exe], stdin=input_file, stdout=subprocess.PIPE)
+        end_time = time.time();
+        dp_time[i] += (end_time - start_time);
     dp_time[i] /= 20.0
     i += 1
 
 trace_greedy = go.Scatter(
-    x=orcamento,
+    x=budget,
     y=greedy_time,
     name="Guloso"
 )
 
 trace_dp = go.Scatter(
-    x=orcamento,
+    x=budget,
     y=dp_time,
     name="Dinâmico"
 )
@@ -182,16 +183,14 @@ layout = go.Layout(
             family="Arial, sans-serif",
             size=18,
         ),
-        range=[0, 101]
     ),
     yaxis=dict(
-        title="Tempo de execução",
+        title="Tempo de execução (em segundos) ",
          titlefont=dict(
             family="Arial, sans-serif",
             size=18,
         ),
-        range=[0, 0.015]
     )
 )
 figure = go.Figure(data=data, layout=layout)
-py.plot(figure, filename=path + "outputs/orcamento.html")
+py.plot(figure, filename=path + "outputs/budget.html")
