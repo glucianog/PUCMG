@@ -6,8 +6,8 @@
 using namespace std;
 
 /*
-* Para realização do trabalho, foi utilizado a técnica de Algoritmo Guloso.
-* Guardamos as dificuldades dos trabalhos a serem realizados em um vector e
+* Para realização do trabalho, foi  utilizado a técnica  de Algoritmo Guloso.
+* Guardamos as  dificuldades dos trabalhos a serem realizados em um vector  e
 * então o ordenamos de forma decrescente, tendo como base o peso do trabalho.
 * Após isso, iremos realizar o seguinte algoritmo para toda a lista:
 *   inicializa integrantes com peso 0
@@ -35,7 +35,7 @@ int minimizarDiferenca(vector<int> &t){
 }
 
 int main() {
-  freopen("pub.in","r",stdin);
+  //freopen("pub.in","r",stdin);
   int c;    
   while(cin >> c) {
     vector<int> t(c);int aux;
