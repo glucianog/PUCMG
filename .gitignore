@@ -5,5 +5,4 @@
 *.exe
 
 #Arquivos do Visual Studio
-/.vscode/*
-5º Período/LPA/TP05/\.vscode/
+\.vscode/
