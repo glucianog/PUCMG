@@ -11,6 +11,9 @@ def dda(p1, p2, cor):
     else:
         passos = abs(dy)
 
+    if passos == 0:
+        return linha
+
     xincr = dx/passos
     yincr = dy/passos
 
