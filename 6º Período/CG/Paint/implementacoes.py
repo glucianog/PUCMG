@@ -7,7 +7,7 @@ def dda(p1, p2, cor):
     linha = [p1]
 
     if abs(dx) > abs(dy) :
-        passos = dx
+        passos = abs(dx)
     else:
         passos = abs(dy)
 
