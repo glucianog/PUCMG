@@ -1,9 +1,10 @@
 
 import sys, os
-from PyQt5.QtWidgets import (QMainWindow, QAction, qApp, QApplication, QDesktopWidget)
-from PyQt5.QtGui import (QIcon, QPainter, QPen)
-from PyQt5.QtCore import Qt
-from implementacoes import (dda, bresenhan, bresenhanCircunferencia)
+from PyQt5.QtWidgets import (QMainWindow, QAction, qApp, QApplication, QDesktopWidget, QPushButton, QLineEdit, 
+                             QInputDialog)
+from PyQt5.QtGui     import (QIcon, QPainter, QPen)
+from PyQt5.QtCore    import Qt
+from implementacoes  import (dda, bresenhan, bresenhanCircunferencia)
 
 class Example(QMainWindow):    
     def __init__(self):
@@ -46,16 +47,33 @@ class Example(QMainWindow):
         drawAct.triggered.connect(self.limparTela)
         self.toolbar.addAction(drawAct)
 
-
         ########### SEÇÃO DE CRIAÇÃO E DEFINIÇÃO DA MENUBAR ###########
         menubar  = self.menuBar()
         transfMenu = menubar.addMenu('&Transformações')
-        traAction = transfMenu.addAction('Translação')      
-        escAction = transfMenu.addAction('Escala')
+        traAction = transfMenu.addAction('Translação')  
+
+        escAction = transfMenu.addAction('Escala')          
+        escAction.triggered.connect(self.showDialogEscala)  
+
         rotAction = transfMenu.addAction('Rotação')
-        refAction = transfMenu.addAction('Reflexão')
-        cisAction = transfMenu.addAction('Cisalhamento')                   
+        rotAction.triggered.connect(self.showDialogRotacao)
+        
+        refMenu = transfMenu.addMenu('Reflexão')
+        refX = refMenu.addAction('Reflexão em X')
+        refY = refMenu.addAction('Reflexão em Y')
+        refC = refMenu.addAction('Reflexão no Centro')
+
+        cisMenu = transfMenu.addMenu('Cisalhamento')   
+        cisX = cisMenu.addAction('Cisalhamento em X')
+        cisX.triggered.connect(self.showDialogCisalhamentoX)
+        cisY = cisMenu.addAction('Cisalhamento em Y')
+        cisY.triggered.connect(self.showDialogCisalhamentoY)
+
         self.show()     
+
+        self.le = QLineEdit(self)
+        self.le.move(130, 22)
+        
 
     def mousePressEvent(self, event):        
         if event.button() == Qt.LeftButton :
@@ -119,13 +137,40 @@ class Example(QMainWindow):
         self.linhas_dda = []
         self.update()
 
+    def showDialogEscala(self):
+        text, ok = QInputDialog.getText(self, 'Escala',
+            'Insira a medida desejada')
+        if ok:
+            self.le.setText(str(text))
+
+    def showDialogRotacao(self):
+        text, ok = QInputDialog.getText(self, 'Rotação',
+            'Insira o grau para roatação')
+        if ok:
+            self.le.setText(str(text))
+
+    def showDialogCisalhamentoX(self):
+        text, ok = QInputDialog.getText(self, 'Cisalhamento em X',
+                    'Insira o valor desejado')
+        if ok:
+            self.le.setText(str(text))
+
+        
+    def showDialogCisalhamentoY(self):
+        text, ok = QInputDialog.getText(self, 'Cisalhamento em Y',
+                    'Insira o valor desejado')
+        if ok:
+            self.le.setText(str(text))
+
+
+        
     def center(self):
         frame = self.frameGeometry()
         cpoint = QDesktopWidget().availableGeometry().center()
         frame.moveCenter(cpoint)
         self.move(frame.topLeft())
         
-if __name__ == '__main__':  
+if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     ex = Example()

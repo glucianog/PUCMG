@@ -16,8 +16,8 @@ def dda(p1, p2, cor):
 
     xincr = dx/passos
     yincr = dy/passos
-
-    while(x < p2['x']):
+    
+    for _ in range(passos):
         x += xincr
         y += yincr
         linha.append({'x': round(x), 'y': round(y)})
@@ -92,3 +92,19 @@ def plotaSimetricos(centro, x, y):
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] + x})
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] - x})
     return pontos
+
+
+def translacao(p1):
+    pass
+
+def escala(p1, x, y):
+    pass
+
+def rotacao(p1, angulo):
+    pass
+
+def reflexao(p1, orientacao):
+    pass
+
+def cisalhamento(p1, orientacao, valor):
+    pass
