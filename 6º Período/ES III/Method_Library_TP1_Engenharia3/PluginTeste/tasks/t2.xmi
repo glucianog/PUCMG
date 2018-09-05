@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-kauQxwQLJVfZOTXsum8xww" name=",_UIf_0KrbEei8kZVRYLFE8g" guid="-kauQxwQLJVfZOTXsum8xww">
+  <sections xmi:id="_bEsgcKrcEei8kZVRYLFE8g" name="Passo3" guid="_bEsgcKrcEei8kZVRYLFE8g">
+    <sectionDescription>mais jeito</sectionDescription>
+  </sections>
+  <sections xmi:id="_cLSVEKrcEei8kZVRYLFE8g" name="Passo4" guid="_cLSVEKrcEei8kZVRYLFE8g">
+    <sectionDescription>nao tem</sectionDescription>
+  </sections>
+</org.eclipse.epf.uma:TaskDescription>

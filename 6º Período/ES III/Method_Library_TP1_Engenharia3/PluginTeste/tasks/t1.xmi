@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-Ccbvgv05CbNXeM0s-gkLSQ" name=",_Rjkk8KrbEei8kZVRYLFE8g" guid="-Ccbvgv05CbNXeM0s-gkLSQ">
+  <sections xmi:id="_NReoMKrcEei8kZVRYLFE8g" name="Passo1" guid="_NReoMKrcEei8kZVRYLFE8g">
+    <sectionDescription>è isso ai</sectionDescription>
+  </sections>
+  <sections xmi:id="_NyY84KrcEei8kZVRYLFE8g" name="Passo2" guid="_NyY84KrcEei8kZVRYLFE8g">
+    <sectionDescription>Descrição qualquer passo2</sectionDescription>
+  </sections>
+</org.eclipse.epf.uma:TaskDescription>

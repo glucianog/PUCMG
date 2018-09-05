@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:org.eclipse.epf.uma.resourcemanager="http:///org/eclipse/epf/uma/resourcemanager.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1">
+  <org.eclipse.epf.uma.resourcemanager:ResourceManager xmi:id="__8D7sKraEei8kZVRYLFE8g" guid="__8D7sKraEei8kZVRYLFE8g">
+    <subManagers xmi:id="_C3kDgKrbEei8kZVRYLFE8g" href="uma://_C3cuwKrbEei8kZVRYLFE8g#_C3kDgKrbEei8kZVRYLFE8g"/>
+    <resourceDescriptors xmi:id="__8Fw4KraEei8kZVRYLFE8g" id="__8CGgKraEei8kZVRYLFE8g" uri=""/>
+    <resourceDescriptors xmi:id="_C3kqkKrbEei8kZVRYLFE8g" id="_C3cuwKrbEei8kZVRYLFE8g" uri="PluginTeste/plugin.xmi"/>
+  </org.eclipse.epf.uma.resourcemanager:ResourceManager>
+  <org.eclipse.epf.uma:MethodLibrary xmi:id="__8CGgKraEei8kZVRYLFE8g" name="Engenharia3" guid="__8CGgKraEei8kZVRYLFE8g">
+    <methodElementProperty xmi:id="__-PF8KraEei8kZVRYLFE8g" name="library_synFree" value="true"/>
+    <methodPlugins xmi:id="_C3cuwKrbEei8kZVRYLFE8g" href="uma://_C3cuwKrbEei8kZVRYLFE8g#_C3cuwKrbEei8kZVRYLFE8g"/>
+  </org.eclipse.epf.uma:MethodLibrary>
+</xmi:XMI>
