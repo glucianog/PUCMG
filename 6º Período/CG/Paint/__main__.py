@@ -5,6 +5,9 @@ from PyQt5.QtWidgets import (QMainWindow, QAction, qApp, QApplication, QDesktopW
 from PyQt5.QtGui     import (QIcon, QPainter, QPen)
 from PyQt5.QtCore    import Qt
 from implementacoes  import (dda, bresenhan, bresenhanCircunferencia)
+from dialogs         import *
+from locale import atof
+from math            import * 
 
 class Example(QMainWindow):    
     def __init__(self):
@@ -51,17 +54,23 @@ class Example(QMainWindow):
         menubar  = self.menuBar()
         transfMenu = menubar.addMenu('&Transformações')
         traAction = transfMenu.addAction('Translação')  
+        traAction.triggered.connect(self.translacaoDialog)
 
         escAction = transfMenu.addAction('Escala')          
-        escAction.triggered.connect(self.showDialogEscala)  
+        escAction.triggered.connect(self.escalaDialog)  
 
         rotAction = transfMenu.addAction('Rotação')
-        rotAction.triggered.connect(self.showDialogRotacao)
+        rotAction.triggered.connect(self.rotacaoDialog)
         
         refMenu = transfMenu.addMenu('Reflexão')
         refX = refMenu.addAction('Reflexão em X')
+        refX.triggered.connect(self.reflexaoX)
+
         refY = refMenu.addAction('Reflexão em Y')
+        refY.triggered.connect(self.reflexaoY)
+
         refC = refMenu.addAction('Reflexão no Centro')
+        refC.triggered.connect(self.reflexaoCentro)
 
         cisMenu = transfMenu.addMenu('Cisalhamento')   
         cisX = cisMenu.addAction('Cisalhamento em X')
@@ -70,10 +79,6 @@ class Example(QMainWindow):
         cisY.triggered.connect(self.showDialogCisalhamentoY)
 
         self.show()     
-
-        self.le = QLineEdit(self)
-        self.le.move(130, 22)
-        
 
     def mousePressEvent(self, event):        
         if event.button() == Qt.LeftButton :
@@ -137,32 +142,159 @@ class Example(QMainWindow):
         self.linhas_dda = []
         self.update()
 
-    def showDialogEscala(self):
-        text, ok = QInputDialog.getText(self, 'Escala',
-            'Insira a medida desejada')
-        if ok:
-            self.le.setText(str(text))
 
-    def showDialogRotacao(self):
-        text, ok = QInputDialog.getText(self, 'Rotação',
-            'Insira o grau para roatação')
+    def translacaoDialog(self):
+        x, y, ok = TranslacaoDialog.getResults()
+        if ok:                
+            for dda in self.linhas_dda:
+                for ponto in dda:
+                    ponto['x'] += int(x)
+                    ponto['y'] += int(y)
+            for bsr in self.linhas_bsr:
+                for ponto in bsr:
+                    ponto['x'] += int(x)
+                    ponto['y'] += int(y)
+            for bsrCirculo in self.circulos:
+                for ponto in bsrCirculo:
+                    ponto['x'] += int(x)
+                    ponto['y'] += int(y)
+
+    def escalaDialog(self):
+        a, b, ok = EscalaDialog.getResults()       
+        if ok:  
+            a = float(a.replace(',','.'))
+            b = float(b.replace(',','.'))           
+            for dda in self.linhas_dda:
+                ponto_inicial = dda[0]
+                for ponto in dda:
+                    ponto['x'] = ((ponto['x'] - ponto_inicial['x'])*a) + ponto_inicial['x']
+                    ponto['y'] = ((ponto['y'] - ponto_inicial['y'])*a) + ponto_inicial['y']
+            for bsr in self.linhas_bsr:
+                ponto_inicial = bsr[0]
+                for ponto in bsr:
+                    ponto['x'] = ((ponto['x'] - ponto_inicial['x'])*a) + ponto_inicial['x']
+                    ponto['y'] = ((ponto['y'] - ponto_inicial['y'])*a) + ponto_inicial['y']
+            for bsrCirculo in self.circulos:
+                ponto_inicial = bsrCirculo[0]
+                for ponto in bsrCirculo:
+                    ponto['x'] = ((ponto['x'] - ponto_inicial['x'])*a) + ponto_inicial['x']
+                    ponto['y'] = ((ponto['y'] - ponto_inicial['y'])*a) + ponto_inicial['y']
+
+    def rotacaoDialog(self):
+        angulo, ok = RotacaoDialog.getResults()
         if ok:
-            self.le.setText(str(text))
+            duas_decimais = '{0:.2f}'
+            sen_angulo = float(duas_decimais.format(sin(angulo)))
+            cos_angulo = float(duas_decimais.format(cos(angulo)))
+            for dda in self.linhas_dda:
+                ponto_inicial = dda[0]
+                for ponto in dda:
+                    x1 = ((ponto['x'] - ponto_inicial['x']) * cos_angulo)
+                    y1 = ((ponto['y'] - ponto_inicial['y']) * sen_angulo)
+
+                    x2 = ((ponto['x'] - ponto_inicial['x']) * sen_angulo)
+                    y2 = ((ponto['y'] - ponto_inicial['y']) * cos_angulo)
+
+                    ponto['x'] = x1 - y1 + ponto_inicial['x']
+                    ponto['y'] = x2 + y2 + ponto_inicial['y']
+
+            for bsr in self.linhas_bsr:
+                ponto_inicial = bsr[0]
+                for ponto in bsr:
+                    x1 = ((ponto['x'] - ponto_inicial['x']) * cos_angulo)
+                    y1 = ((ponto['y'] - ponto_inicial['y']) * sen_angulo)
+
+                    x2 = ((ponto['x'] - ponto_inicial['x']) * sen_angulo)
+                    y2 = ((ponto['y'] - ponto_inicial['y']) * cos_angulo)
+                    
+                    ponto['x'] = x1 - y1 + ponto_inicial['x']
+                    ponto['y'] = x2 + y2 + ponto_inicial['y']
+
+    def reflexao(self, rx, ry):
+        for dda in self.linhas_dda:
+            ponto_inicial = dda[0]
+            for ponto in dda:
+                ponto['x'] = ((ponto['x'] - ponto_inicial['x']) * (rx)) + ponto_inicial['x']
+                ponto['y'] = ((ponto['y'] - ponto_inicial['y']) * (ry)) + ponto_inicial['y']
+
+        for bsr in self.linhas_bsr:
+            ponto_inicial = bsr[0]
+            for ponto in bsr:
+                ponto['x'] = ((ponto['x'] - ponto_inicial['x']) * (rx)) + ponto_inicial['x']
+                ponto['y'] = ((ponto['y'] - ponto_inicial['y']) * (ry)) + ponto_inicial['y']
+
+        for bsrCirculo in self.circulos:
+            ponto_inicial = bsrCirculo[0]
+            for ponto in bsrCirculo:
+                ponto['x'] = ((ponto['x'] - ponto_inicial['x']) * (rx)) + ponto_inicial['x']
+                ponto['y'] = ((ponto['y'] - ponto_inicial['y']) * (ry)) + ponto_inicial['y']
+        self.update()
+
+    def reflexaoX(self):
+        self.reflexao(1,-1)
+
+    def reflexaoY(self):
+        self.reflexao(-1,1)
+
+    def reflexaoCentro(self):
+        self.reflexao(-1,-1)
+
+    def cisalhamento(self, forca, tag):
+        if tag == 'x':
+            x = 0
+            y = forca
+        elif tag == 'y':
+            x = forca
+            y = 0
+
+        for dda in self.linhas_dda:
+            ponto_inicial = dda[0]
+            for ponto in dda:
+                x1 = ((ponto['x'] - ponto_inicial['x']))
+                y1 = ((ponto['y'] - ponto_inicial['y']) * y)
+
+                x2 = ((ponto['x'] - ponto_inicial['x']) * x)
+                y2 = ((ponto['y'] - ponto_inicial['y']))
+
+                ponto['x'] = x1 + y1 + ponto_inicial['x']
+                ponto['y'] = x2 + y2 + ponto_inicial['y']
+
+        for bsr in self.linhas_bsr:
+            ponto_inicial = dda[0]
+            for ponto in bsr:
+                x1 = ((ponto['x'] - ponto_inicial['x']))
+                y1 = ((ponto['y'] - ponto_inicial['y']) * y)
+
+                x2 = ((ponto['x'] - ponto_inicial['x']) * x)
+                y2 = ((ponto['y'] - ponto_inicial['y']))
+
+                ponto['x'] = x1 + y1 + ponto_inicial['x']
+                ponto['y'] = x2 + y2 + ponto_inicial['y']
+            
+        for bsrCirculos in self.circulos:
+            ponto_inicial = bsrCirculos[0]
+            for ponto in bsrCirculos:
+                x1 = ((ponto['x'] - ponto_inicial['x']))
+                y1 = ((ponto['y'] - ponto_inicial['y']) * y)
+
+                x2 = ((ponto['x'] - ponto_inicial['x']) * x)
+                y2 = ((ponto['y'] - ponto_inicial['y']))
+
+                ponto['x'] = x1 + y1 + ponto_inicial['x']
+                ponto['y'] = x2 + y2 + ponto_inicial['y']
+
 
     def showDialogCisalhamentoX(self):
         text, ok = QInputDialog.getText(self, 'Cisalhamento em X',
                     'Insira o valor desejado')
         if ok:
-            self.le.setText(str(text))
-
+            self.cisalhamento(float(text), 'x')
         
     def showDialogCisalhamentoY(self):
         text, ok = QInputDialog.getText(self, 'Cisalhamento em Y',
                     'Insira o valor desejado')
         if ok:
-            self.le.setText(str(text))
-
-
+            self.cisalhamento(float(text), 'y')
         
     def center(self):
         frame = self.frameGeometry()

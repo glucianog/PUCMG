@@ -7,9 +7,9 @@ def dda(p1, p2, cor):
     linha = [p1]
 
     if abs(dx) > abs(dy) :
-        passos = abs(dx)
+        passos = int(abs(dx))
     else:
-        passos = abs(dy)
+        passos = int(abs(dy))
 
     if passos == 0:
         return linha
@@ -26,8 +26,8 @@ def dda(p1, p2, cor):
 
 def bresenhan(p1, p2, cor):
     x, y = p1['x'], p1['y']
-    dx = p2['x'] - x
-    dy = p2['y'] - y
+    dx = int(p2['x'] - x)
+    dy = int(p2['y'] - y)
     linha = [p1]
 
     if dx < 0 :
@@ -92,19 +92,3 @@ def plotaSimetricos(centro, x, y):
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] + x})
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] - x})
     return pontos
-
-
-def translacao(p1):
-    pass
-
-def escala(p1, x, y):
-    pass
-
-def rotacao(p1, angulo):
-    pass
-
-def reflexao(p1, orientacao):
-    pass
-
-def cisalhamento(p1, orientacao, valor):
-    pass
