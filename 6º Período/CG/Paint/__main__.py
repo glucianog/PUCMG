@@ -6,7 +6,6 @@ from PyQt5.QtGui     import (QIcon, QPainter, QPen)
 from PyQt5.QtCore    import Qt
 from implementacoes  import (dda, bresenhan, bresenhanCircunferencia)
 from dialogs         import *
-from locale import atof
 from math            import * 
 
 class Example(QMainWindow):    
@@ -16,6 +15,8 @@ class Example(QMainWindow):
         self.linhas_bsr = []
         self.circulos   = []
         self.comando    = '' 
+        self.cutIni = [{'x': None, 'y': None}]
+        self.cutFim = [{'x': None, 'y': None}]
         self.initUI()       
             
     def initUI(self):              
@@ -45,10 +46,21 @@ class Example(QMainWindow):
         drawAct.triggered.connect(self.btnCirculo)  
         self.toolbar.addAction(drawAct)
 
+        drawAct = QAction(QIcon('icones/cut.png'), 'Recorte -  Cohen-Sutherland (Ctrl+R)', self.toolbar)
+        drawAct.setShortcut('Ctrl+R')
+        drawAct.triggered.connect(self.btnCutCS)
+        self.toolbar.addAction(drawAct)
+
+        drawAct = QAction(QIcon('icones/cut.png'), 'Recorte -  Liang-Barsky (Ctrl+K)', self.toolbar)
+        drawAct.setShortcut('Ctrl+K')
+        drawAct.triggered.connect(self.btnCutLB)
+        self.toolbar.addAction(drawAct)
+
         drawAct = QAction(QIcon('icones/clear.png'), 'Limpar Tela (Ctrl+L)', self.toolbar)
         drawAct.setShortcut('Ctrl+L')
         drawAct.triggered.connect(self.limparTela)
         self.toolbar.addAction(drawAct)
+
 
         ########### SEÇÃO DE CRIAÇÃO E DEFINIÇÃO DA MENUBAR ###########
         menubar  = self.menuBar()
@@ -94,6 +106,12 @@ class Example(QMainWindow):
                 p1 = {'x': event.pos().x(), 'y': event.pos().y()}
                 self.circulos.append([p1,p1])
                 print("Comando: circ, Valor de x:{}, valor de y:{}".format(p1['x'],p1['y']))   
+            elif self.comando == 'cutcs':
+                self.cutIni = {'x': event.pos().x(), 'y': event.pos().y()}                
+                print("Comando: cutcs, Valor de x:{}, valor de y:{}".format(self.cutIni['x'], self.cutIni['y']))   
+            elif self.comando == 'cutlb':
+                self.cutIni = {'x': event.pos().x(), 'y': event.pos().y()}                
+                print("Comando: cutlb, Valor de x:{}, valor de y:{}".format(self.cutIni['x'], self.cutIni['y']))   
 
     def mouseMoveEvent(self, event):
         if self.comando == 'dda':
@@ -108,6 +126,11 @@ class Example(QMainWindow):
             p2 = {'x': event.pos().x(), 'y': event.pos().y()}
             self.circulos[len(self.circulos) - 1][1] = p2
             self.update()
+        if self.comando == 'cutcs':
+            self.cutFim = {'x': event.pos().x(), 'y': event.pos().y()}
+        if self.comando == 'cutlb':
+            self.cutFim = {'x': event.pos().x(), 'y': event.pos().y()}
+
 
     def paintEvent(self, e):
         cor = Qt.black    
@@ -115,17 +138,22 @@ class Example(QMainWindow):
         painter = QPainter(self)
         painter.setPen(pen)    
 
-        for p1,p2 in self.linhas_dda:
-            for ponto in dda(p1,p2,cor):
-                painter.drawPoint(ponto['x'],ponto['y'])
-        
-        for p1,p2 in self.linhas_bsr:
-            for ponto in bresenhan(p1,p2,cor):
-                painter.drawPoint(ponto['x'],ponto['y'])
+        if self.comando == 'cutcs':
+            pass
+        elif self.comando == 'cutlb':
+            pass
+        else:
+            for p1,p2 in self.linhas_dda:
+                for ponto in dda(p1,p2,cor):
+                    painter.drawPoint(ponto['x'],ponto['y'])
+            
+            for p1,p2 in self.linhas_bsr:
+                for ponto in bresenhan(p1,p2,cor):
+                    painter.drawPoint(ponto['x'],ponto['y'])
 
-        for centro, p in self.circulos:
-            for ponto in bresenhanCircunferencia(centro, p, cor):
-                painter.drawPoint(ponto['x'],ponto['y'])
+            for centro, p in self.circulos:
+                for ponto in bresenhanCircunferencia(centro, p, cor):
+                    painter.drawPoint(ponto['x'],ponto['y'])
 
     def btnDDA(self):
         self.comando = 'dda'
@@ -134,7 +162,14 @@ class Example(QMainWindow):
         self.comando = 'bsr'
     
     def btnCirculo(self):
-        self.comando = 'circ'  
+        self.comando = 'circ'
+
+    def btnCutCS(self):
+        self.comando = 'cutcs'
+
+    def btnCutLB(self):
+        self.comando = 'cutlb'
+
     
     def limparTela(self):
         self.circulos   = []

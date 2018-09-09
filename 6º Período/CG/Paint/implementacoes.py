@@ -92,3 +92,140 @@ def plotaSimetricos(centro, x, y):
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] + x})
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] - x})
     return pontos
+
+
+def cohenSutherland(p1, p2, pini, pfim):
+    aceito = False
+    feito = False
+    (xmax, ymax, xmin, ymin) = limites(p1, p2)
+    (x1, y1, x2, y2) = (pini['x'], pini['y'], pfim['x'], pfim['y'])
+    
+    while (not feito):
+        cod1 = calculaCodigo(p1, p2, x1, y1)
+        cod2 = calculaCodigo(p1, p2, x2, y2)
+        if (cod1 == 0 and cod2 == 0):
+            aceito = True
+            feito  = True
+        elif (cod1 & cod2 != 0):
+            feito  = True
+        else:
+            if cod1 != 0:
+                cfora = cod1
+            else:
+                cfora = cod2
+            if (verificaBit(cfora,0) == 1):
+                xint = xmin
+                yint = y1 + (y2-y1) * ((xmax-x1)/(x2-x1))
+            elif (verificaBit(cfora,1) == 1):
+                xint = xmax
+                yint = y1 + (y2-y1) * ((xmax-x1)/(x2-x1))
+            elif (verificaBit(cfora,2) == 1):
+                yint = ymin
+                xint = x1 + (x2-x1) * ((ymin-y1)/(y2-y1))
+            elif (verificaBit(cfora,3) == 1):
+                xint = ymax
+                xint = x1 + (x2-x1) * ((ymax-y1)/(y2-y1))
+            if cfora == cod1:
+                x1 = xint
+                y1 = yint
+            else:
+                x2 = xint
+                y2 = yint
+    if(aceito):
+        return (round(x1), round(y1), round(x2), round(y2))
+    else:
+        return (None, None, None, None)
+
+def calculaCodigo(p1, p2, x, y):
+    cod = 0
+    (xmax, ymax, xmin, ymin) = limites(p1, p2)
+    if x < xmin:
+        cod += 1
+    if x > xmax:
+        cod += 2
+    if y < ymin:
+        cod += 4
+    if y < ymax:
+        cod += 8
+
+    return cod
+
+def limites(p1, p2):
+    if p1['x'] > p2['x']:
+        xmax = p1['x']
+        xmin = p2['x']
+    else:
+        xmax = p2['x']
+        xmin = p1['x']
+    if p1['y'] > p2['y']:
+        ymax = p1['y']
+        ymin = p2['y']
+    else:
+        ymax = p2['y']
+        ymin = p1['y']
+    
+    return(xmax, ymax, xmin, ymin)
+
+def verificaBit(cfora, bit):
+    while bit:
+        cfora >>= 1
+        bit -= 1
+    return (cfora & 1)
+
+def liangBarsky(p1, p2, pini, pfim):
+    u1 = 0
+    u2 = 1
+
+    (x1, y1, x2, y2) = (pini['x'], pini['y'], pfim['x'], pfim['y'])
+    (xmax, ymax, xmin, ymin) = limites(p1, p2)
+
+    dx = x2 - x1
+    dy = y2 - y1
+    
+    if(cliptest(-dx, x1-xmin, u1, u2)):
+        if(cliptest(dx, xmax-x1, u1, u2)):
+            if(cliptest(-dy, y1-ymin, u1, u2)):
+                if(cliptest(dy, ymax-y1, u1, u2)):
+                    if u2 < 1:
+                        x2 = x1 + (dx * u2) # x1 = valor inicial antes do recorte
+                        y2 = y1 + (dy * u2) # y1 = valor inicial antes do recorte
+                    if u1 > 0:
+                        x1 = x1 + (dx * u1)
+                        y1 = y1 + (dy * u1)
+                    #return (round(x1), round(y1), round(x2), round(y2)
+
+def cliptest(p, q, u1, u2):
+    result = True
+    if p < 0:
+        r = p/q
+        if r > u2:
+            result = False #fora da janela
+        elif r > u1:
+            u1 = r
+    elif p > 0:
+        r = q/p
+        if r < u1:
+            result = False #fora da janela
+        elif r < u2:
+            u2 = r
+    elif q < 0:
+        result = False
+    return result #False = fora da janela, True = dentro da janela
+
+def boundary4(x, y, borda, nova):
+    atual = obterCor(x, y)
+    if atual != borda and atual != nova:
+        atribuirCor(x, y, nova)
+        boundary4(x+1, y,  borda, nova)
+        boundary4(x-1, y, borda, nova)
+        boundary4(x, y+1, borda, nova)
+        boundary4(x, y-1, borda, nova)
+
+def flood4(x, y, antiga, nova):
+    atual = obterCor(x, y)
+    if atual == antiga:
+        atribuiCor(x, y, nova)
+        flood4(x+1, y, antiga, nova)
+        flood4(x-1, y, antiga, nova)
+        flood4(x, y+1, antiga, nova)
+        flood4(x, y-1, antiga, nova)
