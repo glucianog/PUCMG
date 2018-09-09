@@ -182,17 +182,19 @@ def liangBarsky(p1, p2, pini, pfim):
     dx = x2 - x1
     dy = y2 - y1
     
-    if(cliptest(-dx, x1-xmin, u1, u2)):
-        if(cliptest(dx, xmax-x1, u1, u2)):
-            if(cliptest(-dy, y1-ymin, u1, u2)):
-                if(cliptest(dy, ymax-y1, u1, u2)):
+    if(cliptest(-dx, x1-xmin, u1, u2)): #fronteira esquerda
+        if(cliptest(dx, xmax-x1, u1, u2)): #fronteira direita
+            if(cliptest(-dy, y1-ymin, u1, u2)): #fronteira inferior
+                if(cliptest(dy, ymax-y1, u1, u2)): #fronteira superior
                     if u2 < 1:
                         x2 = x1 + (dx * u2) # x1 = valor inicial antes do recorte
                         y2 = y1 + (dy * u2) # y1 = valor inicial antes do recorte
                     if u1 > 0:
                         x1 = x1 + (dx * u1)
                         y1 = y1 + (dy * u1)
-                    #return (round(x1), round(y1), round(x2), round(y2)
+                    return (round(x1), round(y1), round(x2), round(y2))
+    else:
+        return (None, None, None, None)
 
 def cliptest(p, q, u1, u2):
     result = True
