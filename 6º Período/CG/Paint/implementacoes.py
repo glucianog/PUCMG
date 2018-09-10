@@ -93,59 +93,61 @@ def plotaSimetricos(centro, x, y):
     pontos.append({'x': centro['x'] - y, 'y': centro['y'] - x})
     return pontos
 
-
 def cohenSutherland(p1, p2, pini, pfim):
     aceito = False
     feito = False
     (xmax, ymax, xmin, ymin) = limites(p1, p2)
     (x1, y1, x2, y2) = (pini['x'], pini['y'], pfim['x'], pfim['y'])
     
-    while (not feito):
+    while not feito:
         cod1 = calculaCodigo(p1, p2, x1, y1)
         cod2 = calculaCodigo(p1, p2, x2, y2)
-        if (cod1 == 0 and cod2 == 0):
+        if cod1 == 0 and cod2 == 0:
             aceito = True
             feito  = True
-        elif (cod1 & cod2 != 0):
+        elif cod1 & cod2 != 0:
             feito  = True
         else:
             if cod1 != 0:
                 cfora = cod1
             else:
                 cfora = cod2
-            if (verificaBit(cfora,0) == 1):
+
+            if cfora & 1 == 1: #se bit 0 está setado
                 xint = xmin
-                yint = y1 + (y2-y1) * ((xmax-x1)/(x2-x1))
-            elif (verificaBit(cfora,1) == 1):
+                yint = y1 + (y2-y1) * (xmin-x1)/ (x2-x1)
+            elif cfora & 2 == 2: #se bit 1 está setado
                 xint = xmax
-                yint = y1 + (y2-y1) * ((xmax-x1)/(x2-x1))
-            elif (verificaBit(cfora,2) == 1):
+                yint = y1 + (y2-y1) * (xmax-x1)/(x2-x1)
+            elif cfora & 4 == 4: #se bit 2 está setado
                 yint = ymin
-                xint = x1 + (x2-x1) * ((ymin-y1)/(y2-y1))
-            elif (verificaBit(cfora,3) == 1):
-                xint = ymax
-                xint = x1 + (x2-x1) * ((ymax-y1)/(y2-y1))
-            if cfora == cod1:
+                xint = x1 + (x2-x1) * (ymin-y1)/(y2-y1)
+            elif cfora & 8 == 8: #se bit 3 está setado
+                yint = ymax
+                xint = x1 + (x2-x1) * (ymax-y1)/(y2-y1)
+
+            if cfora == cod1: #atualiza ponto incial da reta
                 x1 = xint
                 y1 = yint
-            else:
+            else:             #atualiza ponto final da reta
                 x2 = xint
                 y2 = yint
     if(aceito):
         return (round(x1), round(y1), round(x2), round(y2))
     else:
-        return (None, None, None, None)
+        return ()
 
 def calculaCodigo(p1, p2, x, y):
     cod = 0
     (xmax, ymax, xmin, ymin) = limites(p1, p2)
     if x < xmin:
         cod += 1
-    if x > xmax:
+    elif x > xmax:
         cod += 2
+
     if y < ymin:
         cod += 4
-    if y < ymax:
+    elif y > ymax:
         cod += 8
 
     return cod
@@ -157,6 +159,7 @@ def limites(p1, p2):
     else:
         xmax = p2['x']
         xmin = p1['x']
+
     if p1['y'] > p2['y']:
         ymax = p1['y']
         ymin = p2['y']
@@ -165,12 +168,6 @@ def limites(p1, p2):
         ymin = p1['y']
     
     return(xmax, ymax, xmin, ymin)
-
-def verificaBit(cfora, bit):
-    while bit:
-        cfora >>= 1
-        bit -= 1
-    return (cfora & 1)
 
 def liangBarsky(p1, p2, pini, pfim):
     u1 = 0
@@ -182,10 +179,14 @@ def liangBarsky(p1, p2, pini, pfim):
     dx = x2 - x1
     dy = y2 - y1
     
-    if(cliptest(-dx, x1-xmin, u1, u2)): #fronteira esquerda
-        if(cliptest(dx, xmax-x1, u1, u2)): #fronteira direita
-            if(cliptest(-dy, y1-ymin, u1, u2)): #fronteira inferior
-                if(cliptest(dy, ymax-y1, u1, u2)): #fronteira superior
+    u1, u2, result = cliptest(-dx, x1 - xmin, u1, u2)
+    if result: #fronteira esquerda
+        u1, u2, result = cliptest(dx, xmax - x1, u1, u2)
+        if result: #fronteira direita
+            u1, u2, result = cliptest(-dy, y1 - ymin, u1, u2)
+            if result: #fronteira inferior
+                u1, u2, result = cliptest(dy, ymax - y1, u1, u2)
+                if result: #fronteira superior
                     if u2 < 1:
                         x2 = x1 + (dx * u2) # x1 = valor inicial antes do recorte
                         y2 = y1 + (dy * u2) # y1 = valor inicial antes do recorte
@@ -193,13 +194,13 @@ def liangBarsky(p1, p2, pini, pfim):
                         x1 = x1 + (dx * u1)
                         y1 = y1 + (dy * u1)
                     return (round(x1), round(y1), round(x2), round(y2))
-    else:
-        return (None, None, None, None)
+
+    return ()
 
 def cliptest(p, q, u1, u2):
     result = True
     if p < 0:
-        r = p/q
+        r = q/p
         if r > u2:
             result = False #fora da janela
         elif r > u1:
@@ -212,7 +213,7 @@ def cliptest(p, q, u1, u2):
             u2 = r
     elif q < 0:
         result = False
-    return result #False = fora da janela, True = dentro da janela
+    return (u1, u2, result) #False = fora da janela, True = dentro da janela
 
 def boundary4(x, y, borda, nova):
     atual = obterCor(x, y)

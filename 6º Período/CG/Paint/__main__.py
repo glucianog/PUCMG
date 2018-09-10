@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QMainWindow, QAction, qApp, QApplication, QDesktopW
                              QInputDialog)
 from PyQt5.QtGui     import (QIcon, QPainter, QPen)
 from PyQt5.QtCore    import Qt
-from implementacoes  import (dda, bresenhan, bresenhanCircunferencia)
+from implementacoes  import (dda, bresenhan, bresenhanCircunferencia, cohenSutherland, liangBarsky)
 from dialogs         import *
 from math            import * 
 
@@ -15,8 +15,10 @@ class Example(QMainWindow):
         self.linhas_bsr = []
         self.circulos   = []
         self.comando    = '' 
-        self.cutIni = [{'x': None, 'y': None}]
-        self.cutFim = [{'x': None, 'y': None}]
+       # self.recorteIni = {'x': None, 'y': None}
+       # self.recorteFim = {'x': None, 'y': None}
+        self.recorteIni = None
+        self.recorteFim = None
         self.initUI()       
             
     def initUI(self):              
@@ -48,12 +50,12 @@ class Example(QMainWindow):
 
         drawAct = QAction(QIcon('icones/cut.png'), 'Recorte -  Cohen-Sutherland (Ctrl+R)', self.toolbar)
         drawAct.setShortcut('Ctrl+R')
-        drawAct.triggered.connect(self.btnCutCS)
+        drawAct.triggered.connect(self.btnrecorteCS)
         self.toolbar.addAction(drawAct)
 
         drawAct = QAction(QIcon('icones/cut.png'), 'Recorte -  Liang-Barsky (Ctrl+K)', self.toolbar)
         drawAct.setShortcut('Ctrl+K')
-        drawAct.triggered.connect(self.btnCutLB)
+        drawAct.triggered.connect(self.btnrecorteLB)
         self.toolbar.addAction(drawAct)
 
         drawAct = QAction(QIcon('icones/clear.png'), 'Limpar Tela (Ctrl+L)', self.toolbar)
@@ -106,12 +108,12 @@ class Example(QMainWindow):
                 p1 = {'x': event.pos().x(), 'y': event.pos().y()}
                 self.circulos.append([p1,p1])
                 print("Comando: circ, Valor de x:{}, valor de y:{}".format(p1['x'],p1['y']))   
-            elif self.comando == 'cutcs':
-                self.cutIni = {'x': event.pos().x(), 'y': event.pos().y()}                
-                print("Comando: cutcs, Valor de x:{}, valor de y:{}".format(self.cutIni['x'], self.cutIni['y']))   
-            elif self.comando == 'cutlb':
-                self.cutIni = {'x': event.pos().x(), 'y': event.pos().y()}                
-                print("Comando: cutlb, Valor de x:{}, valor de y:{}".format(self.cutIni['x'], self.cutIni['y']))   
+            elif self.comando == 'recortecs':
+                self.recorteIni = {'x': event.pos().x(), 'y': event.pos().y()}                
+                print("Comando: recortecs, Valor de x:{}, valor de y:{}".format(self.recorteIni['x'], self.recorteIni['y']))   
+            elif self.comando == 'recortelb':
+                self.recorteIni = {'x': event.pos().x(), 'y': event.pos().y()}                
+                print("Comando: recortelb, Valor de x:{}, valor de y:{}".format(self.recorteIni['x'], self.recorteIni['y']))   
 
     def mouseMoveEvent(self, event):
         if self.comando == 'dda':
@@ -126,10 +128,10 @@ class Example(QMainWindow):
             p2 = {'x': event.pos().x(), 'y': event.pos().y()}
             self.circulos[len(self.circulos) - 1][1] = p2
             self.update()
-        if self.comando == 'cutcs':
-            self.cutFim = {'x': event.pos().x(), 'y': event.pos().y()}
-        if self.comando == 'cutlb':
-            self.cutFim = {'x': event.pos().x(), 'y': event.pos().y()}
+        if self.comando == 'recortecs':
+            self.recorteFim = {'x': event.pos().x(), 'y': event.pos().y()}
+        if self.comando == 'recortelb':
+            self.recorteFim = {'x': event.pos().x(), 'y': event.pos().y()}
 
 
     def paintEvent(self, e):
@@ -138,10 +140,63 @@ class Example(QMainWindow):
         painter = QPainter(self)
         painter.setPen(pen)    
 
-        if self.comando == 'cutcs':
-            pass
-        elif self.comando == 'cutlb':
-            pass
+        if self.comando == 'recortecs':
+            if self.recorteIni and self.recorteFim:
+                pen = QPen(cor, 3, Qt.DashLine)
+                painter.setPen(pen)
+                painter.drawLine(self.recorteIni['x'], self.recorteIni['y'], self.recorteFim['x'], self.recorteIni['y']) #superior
+                painter.drawLine(self.recorteIni['x'], self.recorteIni['y'], self.recorteIni['x'], self.recorteFim['y']) #esquerda
+                painter.drawLine(self.recorteIni['x'], self.recorteFim['y'], self.recorteFim['x'], self.recorteFim['y']) #inferior
+                painter.drawLine(self.recorteFim['x'], self.recorteFim['y'], self.recorteFim['x'], self.recorteIni['y']) #direita
+
+                for pini, pfim in self.linhas_dda:
+                    valores = cohenSutherland(self.recorteIni, self.recorteFim, pini, pfim)
+                    if not valores:
+                        continue
+                    (x1, y1, x2, y2) = valores
+                    p1 = {'x': x1, 'y': y1}
+                    p2 = {'x': x2, 'y': y2}
+                    for ponto in bresenhan(p1, p2, cor):
+                        painter.drawPoint(ponto['x'], ponto['y'])
+
+                for pini, pfim in self.linhas_bsr:
+                    valores = cohenSutherland(self.recorteIni, self.recorteFim, pini, pfim)
+                    if not valores:
+                        continue
+                    (x1, y1, x2, y2) = valores
+                    p1 = {'x': x1, 'y': y1}
+                    p2 = {'x': x2, 'y': y2}
+                    for ponto in bresenhan(p1, p2, cor):
+                        painter.drawPoint(ponto['x'], ponto['y'])
+            self.update()
+        elif self.comando == 'recortelb':
+            if self.recorteIni and self.recorteFim:
+                pen = QPen(cor, 3, Qt.DashLine)
+                painter.setPen(pen)
+                painter.drawLine(self.recorteIni['x'], self.recorteIni['y'], self.recorteFim['x'], self.recorteIni['y']) #superior
+                painter.drawLine(self.recorteIni['x'], self.recorteIni['y'], self.recorteIni['x'], self.recorteFim['y']) #esquerda
+                painter.drawLine(self.recorteIni['x'], self.recorteFim['y'], self.recorteFim['x'], self.recorteFim['y']) #inferior
+                painter.drawLine(self.recorteFim['x'], self.recorteFim['y'], self.recorteFim['x'], self.recorteIni['y']) #direita
+                for pini, pfim in self.linhas_dda:
+                    valores = liangBarsky(self.recorteIni, self.recorteFim, pini, pfim)
+                    if not valores:
+                        continue
+                    (x1, y1, x2, y2) = valores
+                    p1 = {'x': x1, 'y': y1}
+                    p2 = {'x': x2, 'y': y2}
+                    for ponto in bresenhan(p1, p2, cor):
+                        painter.drawPoint(ponto['x'], ponto['y'])
+
+                for pini, pfim in self.linhas_bsr:
+                    valores = liangBarsky(self.recorteIni, self.recorteFim, pini, pfim)
+                    if not valores:
+                        continue
+                    (x1, y1, x2, y2) = valores
+                    p1 = {'x': x1, 'y': y1}
+                    p2 = {'x': x2, 'y': y2}
+                    for ponto in bresenhan(p1, p2, cor):
+                        painter.drawPoint(ponto['x'], ponto['y'])
+            self.update()
         else:
             for p1,p2 in self.linhas_dda:
                 for ponto in dda(p1,p2,cor):
@@ -164,11 +219,11 @@ class Example(QMainWindow):
     def btnCirculo(self):
         self.comando = 'circ'
 
-    def btnCutCS(self):
-        self.comando = 'cutcs'
+    def btnrecorteCS(self):
+        self.comando = 'recortecs'
 
-    def btnCutLB(self):
-        self.comando = 'cutlb'
+    def btnrecorteLB(self):
+        self.comando = 'recortelb'
 
     
     def limparTela(self):
