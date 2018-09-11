@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-ioAIK3nNrSk4PLf0aiM9Sw" name=",_A13ZoLBOEeiGiq9iuro7UA" guid="-ioAIK3nNrSk4PLf0aiM9Sw">
+  <sections xmi:id="_uHPFYLBPEeiGiq9iuro7UA" name="Elaborar perguntas" guid="_uHPFYLBPEeiGiq9iuro7UA"/>
+  <sections xmi:id="_vSCroLBPEeiGiq9iuro7UA" name="Responder perguntas" guid="_vSCroLBPEeiGiq9iuro7UA"/>
+</org.eclipse.epf.uma:TaskDescription>

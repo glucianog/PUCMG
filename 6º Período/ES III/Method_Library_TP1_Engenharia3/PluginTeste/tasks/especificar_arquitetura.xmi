@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-9VmAYKS7n-eyYYnjc058yA" name=",_OjxpMLBQEeiGiq9iuro7UA" guid="-9VmAYKS7n-eyYYnjc058yA">
+  <sections xmi:id="_YcW34LBQEeiGiq9iuro7UA" name="Analisar requisitos funcionais" guid="_YcW34LBQEeiGiq9iuro7UA"/>
+  <sections xmi:id="_atjecLBQEeiGiq9iuro7UA" name="Analisar requisitos não-funcionais" guid="_atjecLBQEeiGiq9iuro7UA"/>
+  <sections xmi:id="_bwTU4LBQEeiGiq9iuro7UA" name="Projetar arquitetura" guid="_bwTU4LBQEeiGiq9iuro7UA"/>
+</org.eclipse.epf.uma:TaskDescription>

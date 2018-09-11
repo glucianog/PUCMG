@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-DEUSXR5oucIaUFInsJp38g" name=",_G59DALBOEeiGiq9iuro7UA" guid="-DEUSXR5oucIaUFInsJp38g">
+  <sections xmi:id="_HZiQELBQEeiGiq9iuro7UA" name="Obter lista de requisitos" guid="_HZiQELBQEeiGiq9iuro7UA"/>
+  <sections xmi:id="_ITtZULBQEeiGiq9iuro7UA" name="Analisar lista de requisitos" guid="_ITtZULBQEeiGiq9iuro7UA"/>
+  <sections xmi:id="_KjC-sLBQEeiGiq9iuro7UA" name="Refinar lista de requisitos" guid="_KjC-sLBQEeiGiq9iuro7UA"/>
+  <sections xmi:id="_Lr6EMLBQEeiGiq9iuro7UA" name="Aprovar lista de requisitos" guid="_Lr6EMLBQEeiGiq9iuro7UA"/>
+</org.eclipse.epf.uma:TaskDescription>

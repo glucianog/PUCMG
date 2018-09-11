@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-Q7J-2yCyipOPhIlrKP-8ig" name="validao,_IT0Y8LBOEeiGiq9iuro7UA" guid="-Q7J-2yCyipOPhIlrKP-8ig">
+  <sections xmi:id="_YjlyELHhEeikNLEyao9Sdw" name="Revisar código" guid="_YjlyELHhEeikNLEyao9Sdw"/>
+  <sections xmi:id="_ZqYbALHhEeikNLEyao9Sdw" name="Reportar Bugs" guid="_ZqYbALHhEeikNLEyao9Sdw"/>
+  <sections xmi:id="_aNiLYLHhEeikNLEyao9Sdw" name="Aprovar código" guid="_aNiLYLHhEeikNLEyao9Sdw"/>
+</org.eclipse.epf.uma:TaskDescription>

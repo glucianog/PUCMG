@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.eclipse.epf.uma:TaskDescription xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.eclipse.epf.uma="http://www.eclipse.org/epf/uma/1.0.6/uma.ecore" xmlns:epf="http://www.eclipse.org/epf" epf:version="1.5.1" xmi:id="-Utc8Y0WohqQwGOdc5hsyqQ" name=",_dvQU4LBQEeiGiq9iuro7UA" guid="-Utc8Y0WohqQwGOdc5hsyqQ">
+  <sections xmi:id="_n7zocLBQEeiGiq9iuro7UA" name="Validar arquitetura" guid="_n7zocLBQEeiGiq9iuro7UA"/>
+  <sections xmi:id="_pW2DELBQEeiGiq9iuro7UA" name="Aprovar arquitetura" guid="_pW2DELBQEeiGiq9iuro7UA"/>
+</org.eclipse.epf.uma:TaskDescription>
