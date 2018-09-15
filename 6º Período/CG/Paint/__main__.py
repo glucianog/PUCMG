@@ -2,7 +2,7 @@
 import sys, os
 from PyQt5.QtWidgets import (QMainWindow, QAction, qApp, QApplication, QDesktopWidget, QPushButton, QLineEdit, 
                              QInputDialog)
-from PyQt5.QtGui     import (QIcon, QPainter, QPen)
+from PyQt5.QtGui     import (QIcon, QPainter, QPen, QColor)
 from PyQt5.QtCore    import Qt
 from implementacoes  import (dda, bresenhan, bresenhanCircunferencia, cohenSutherland, liangBarsky)
 from dialogs         import *
@@ -15,8 +15,7 @@ class Example(QMainWindow):
         self.linhas_bsr = []
         self.circulos   = []
         self.comando    = '' 
-       # self.recorteIni = {'x': None, 'y': None}
-       # self.recorteFim = {'x': None, 'y': None}
+        self.preenchimento = []
         self.recorteIni = None
         self.recorteFim = None
         self.initUI()       
@@ -28,10 +27,7 @@ class Example(QMainWindow):
         self.setWindowIcon(QIcon('icones/main.png'))   
 
         ########### SEÇÃO DE CRIAÇÃO E DEFINIÇÃO DA TOOLBAR ###########
-        self.toolbar = self.addToolBar('Desenhar Figuras')  
-
-        # se você criar um QActionGroup e setar um atributo lá como 'exclusive' (já é o padrão)
-        # os actions que voce colocar como parentes vão ser "selecionados" apenas 1 por vez (não precisa daquela minha função pra isso)    
+        self.toolbar = self.addToolBar('Desenhar Figuras')   
 
         drawAct = QAction(QIcon('icones/line_dda.png'), 'Desenhar Reta - DDA (Ctrl+D)', self.toolbar)
         drawAct.setShortcut('Ctrl+D')
@@ -50,12 +46,22 @@ class Example(QMainWindow):
 
         drawAct = QAction(QIcon('icones/cut.png'), 'Recorte -  Cohen-Sutherland (Ctrl+R)', self.toolbar)
         drawAct.setShortcut('Ctrl+R')
-        drawAct.triggered.connect(self.btnrecorteCS)
+        drawAct.triggered.connect(self.btnRecorteCS)
         self.toolbar.addAction(drawAct)
 
         drawAct = QAction(QIcon('icones/cut.png'), 'Recorte -  Liang-Barsky (Ctrl+K)', self.toolbar)
         drawAct.setShortcut('Ctrl+K')
-        drawAct.triggered.connect(self.btnrecorteLB)
+        drawAct.triggered.connect(self.btnRecorteLB)
+        self.toolbar.addAction(drawAct)
+
+        drawAct = QAction(QIcon('icones/paint.png'), 'Preenchimento Boundary-Fill (Ctrl+Y)', self.toolbar)
+        drawAct.setShortcut('Ctrl+Y')
+        drawAct.triggered.connect(self.btnPreenchimentoBoundary)
+        self.toolbar.addAction(drawAct)
+
+        drawAct = QAction(QIcon('icones/paint.png'), 'Preenchimento Flood-Fill (Ctrl+F)', self.toolbar)
+        drawAct.setShortcut('Ctrl+F')
+        drawAct.triggered.connect(self.btnPreenchimentoFlood)
         self.toolbar.addAction(drawAct)
 
         drawAct = QAction(QIcon('icones/clear.png'), 'Limpar Tela (Ctrl+L)', self.toolbar)
@@ -63,6 +69,7 @@ class Example(QMainWindow):
         drawAct.triggered.connect(self.limparTela)
         self.toolbar.addAction(drawAct)
 
+      
 
         ########### SEÇÃO DE CRIAÇÃO E DEFINIÇÃO DA MENUBAR ###########
         menubar  = self.menuBar()
@@ -114,6 +121,18 @@ class Example(QMainWindow):
             elif self.comando == 'recortelb':
                 self.recorteIni = {'x': event.pos().x(), 'y': event.pos().y()}                
                 print("Comando: recortelb, Valor de x:{}, valor de y:{}".format(self.recorteIni['x'], self.recorteIni['y']))   
+            elif self.comando == 'preenchimentoBoundary':
+                x, y = event.pos().x(), event.pos().y()
+                p = {'x': x, 'y': y} 
+                borda = QColor(Qt.black).rgb()
+                nova  = QColor(Qt.blue).rgb()
+                self.preenchimento += self.boundary4(p, borda, nova)            
+            elif self.comando == 'preenchimentoFlood':
+                x, y = event.pos().x(), event.pos().y()
+                p = {'x': x, 'y': y}
+                atual = self.obterCor(x, y)
+                nova  = QColor(Qt.blue).rgb()
+                self.preenchimento += self.flood4(p, atual, nova)                     
 
     def mouseMoveEvent(self, event):
         if self.comando == 'dda':
@@ -132,7 +151,6 @@ class Example(QMainWindow):
             self.recorteFim = {'x': event.pos().x(), 'y': event.pos().y()}
         if self.comando == 'recortelb':
             self.recorteFim = {'x': event.pos().x(), 'y': event.pos().y()}
-
 
     def paintEvent(self, e):
         cor = Qt.black    
@@ -210,6 +228,13 @@ class Example(QMainWindow):
                 for ponto in bresenhanCircunferencia(centro, p, cor):
                     painter.drawPoint(ponto['x'],ponto['y'])
 
+            ## PREENCHIMENTO DE FIGURAS
+            pen = QPen(Qt.blue, 3, Qt.SolidLine)
+            painter.setPen(pen) 
+            for ponto in self.preenchimento:                    
+                painter.drawPoint(ponto['x'], ponto['y'])
+            self.update()
+
     def btnDDA(self):
         self.comando = 'dda'
     
@@ -219,19 +244,24 @@ class Example(QMainWindow):
     def btnCirculo(self):
         self.comando = 'circ'
 
-    def btnrecorteCS(self):
+    def btnRecorteCS(self):
         self.comando = 'recortecs'
 
-    def btnrecorteLB(self):
+    def btnRecorteLB(self):
         self.comando = 'recortelb'
 
+    def btnPreenchimentoBoundary(self):
+        self.comando = 'preenchimentoBoundary'
+        
+    def btnPreenchimentoFlood(self):
+        self.comando = 'preenchimentoFlood'
     
     def limparTela(self):
-        self.circulos   = []
-        self.linhas_bsr = []
-        self.linhas_dda = []
+        self.circulos      = []
+        self.linhas_bsr    = []
+        self.linhas_dda    = []
+        self.preenchimento = []
         self.update()
-
 
     def translacaoDialog(self):
         x, y, ok = TranslacaoDialog.getResults()
@@ -373,7 +403,6 @@ class Example(QMainWindow):
                 ponto['x'] = x1 + y1 + ponto_inicial['x']
                 ponto['y'] = x2 + y2 + ponto_inicial['y']
 
-
     def showDialogCisalhamentoX(self):
         text, ok = QInputDialog.getText(self, 'Cisalhamento em X',
                     'Insira o valor desejado')
@@ -391,9 +420,68 @@ class Example(QMainWindow):
         cpoint = QDesktopWidget().availableGeometry().center()
         frame.moveCenter(cpoint)
         self.move(frame.topLeft())
-        
-if __name__ == '__main__':
 
+    def boundary4(self, ponto, borda, nova):
+        stack = [ponto]
+        points = []
+        helper = {}
+
+        while stack:
+            p = stack.pop()
+            x, y = p.values()
+            key = '{},{}'.format(x, y)
+
+            if key in helper:
+                atual = helper[key]
+            else:
+                atual = self.obterCor(x, y)
+                helper[key] = atual
+
+            if atual != borda and atual != nova:
+                helper[key] = nova
+                points.append(p)
+
+                stack.append({'x': x, 'y': y - 1})
+                stack.append({'x': x, 'y': y + 1})
+                stack.append({'x': x - 1, 'y': y})
+                stack.append({'x': x + 1, 'y': y})      
+
+        return points
+
+    def flood4(self, ponto, antiga, nova):
+        stack = [ponto]
+        points = []
+        helper = {}
+
+        while stack:
+            p = stack.pop()
+            x, y = p.values()
+            key = '{},{}'.format(x, y)
+
+            if key in helper:
+                atual = helper[key]
+            else:
+                atual = self.obterCor(x, y)
+                helper[key] = atual
+
+            if atual == antiga:
+                helper[key] = nova
+                points.append(p)
+
+                stack.append({'x': x, 'y': y - 1})
+                stack.append({'x': x, 'y': y + 1})
+                stack.append({'x': x - 1, 'y': y})
+                stack.append({'x': x + 1, 'y': y})      
+
+        return points
+
+    def obterCor(self, x, y):
+        pixmap = self.grab()
+        image = pixmap.toImage()
+        cor = image.pixelColor(x, y).rgb()
+        return cor  
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec_())

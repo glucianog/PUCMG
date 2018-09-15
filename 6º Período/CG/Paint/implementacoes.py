@@ -215,6 +215,15 @@ def cliptest(p, q, u1, u2):
         result = False
     return (u1, u2, result) #False = fora da janela, True = dentro da janela
 
+
+
+"""
+OS MÉTODOS DE PREENCHIMENTO FORAM IMPLEMENTADOS NO ARQUIVO __main__.py
+POIS NECESSITAM ACESSAR MÉTODOS DA CALSSE QWIDGET, QUE SE LÁ SE ENCONTRA.
+COM ISSO, OS CÓDIGOS PODEM SER ENCONTRADOS (EM FORMA ITERATIVA), A PARTIR DA LINHA
+426 DESTE ARQUIVO. OS MÉTODOS FORAM DESENVOLVIDOS COM AUXÍLIO COM O ALUNO
+LUIGI DOMENICO CECCHINI SOARES
+"""
 def boundary4(x, y, borda, nova):
     atual = obterCor(x, y)
     if atual != borda and atual != nova:
