@@ -158,7 +158,7 @@ class Example(QMainWindow):
         painter = QPainter(self)
         painter.setPen(pen)    
 
-        if self.comando == 'recortecs':
+        if self.comando == 'recortecs' and self.recorteIni:
             if self.recorteIni and self.recorteFim:
                 pen = QPen(cor, 3, Qt.DashLine)
                 painter.setPen(pen)
@@ -187,7 +187,7 @@ class Example(QMainWindow):
                     for ponto in bresenhan(p1, p2, cor):
                         painter.drawPoint(ponto['x'], ponto['y'])
             self.update()
-        elif self.comando == 'recortelb':
+        elif self.comando == 'recortelb' and self.recorteIni:
             if self.recorteIni and self.recorteFim:
                 pen = QPen(cor, 3, Qt.DashLine)
                 painter.setPen(pen)
@@ -263,6 +263,13 @@ class Example(QMainWindow):
         self.preenchimento = []
         self.update()
 
+    def center(self):
+        frame = self.frameGeometry()
+        cpoint = QDesktopWidget().availableGeometry().center()
+        frame.moveCenter(cpoint)
+        self.move(frame.topLeft())
+
+    ########### SEÇÃO DAS TRANSFORMAÇÕES ########### 
     def translacaoDialog(self):
         x, y, ok = TranslacaoDialog.getResults()
         if ok:                
@@ -415,12 +422,8 @@ class Example(QMainWindow):
         if ok:
             self.cisalhamento(float(text), 'y')
         
-    def center(self):
-        frame = self.frameGeometry()
-        cpoint = QDesktopWidget().availableGeometry().center()
-        frame.moveCenter(cpoint)
-        self.move(frame.topLeft())
 
+    ########### SEÇÃO DO PREENCHIMENTO ##########
     def boundary4(self, ponto, borda, nova):
         stack = [ponto]
         points = []
