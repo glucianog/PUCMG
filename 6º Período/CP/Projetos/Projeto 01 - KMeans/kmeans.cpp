@@ -11,6 +11,19 @@
 
 using namespace std;
 
+/**
+ * 
+ * TEMPO SEQUENCIAL MÁQUINA PESSOAL: 23,618s
+ * TEMPO PARALELO MÁQUINA PESSOAL 2 THREADS: 13,581s ---- SpeedUp: 1,73
+ * TEMPO PARALELO MÁQUINA PESSOAL 4 THREADS: 11,258s ---- SpeedUp: 2,09
+ * TEMPO PARALELO MÁQUINA PESSOAL 8 THREADS: 11,388s ---- SpeedUp: 2,07
+ * 
+ * TEMPO SEQUENCIAL MÁQUINA PARCODE: 23,049s
+ * TEMPO PARALELO MÁQUINA PARCODE 2 THREADS: 17,468s -------- SpeedUp: 1,31
+ * TEMPO PARALELO MÁQUINA PARCODE 4 THREADS: 14,297s -------- SpeedUp: 1,61
+ * TEMPO PARALELO MÁQUINA PARCODE 8 THREADS: 23,936s (?) ---- SpeedUp: 0,96 (não há SpeedUp)
+ */
+
 class Point
 {
 private:
@@ -156,12 +169,11 @@ private:
 
 		min_dist = sqrt(sum);
 
+		
 		for(int i = 1; i < K; i++)
 		{
 			double dist;
 			sum = 0.0;
-
-            //#pragma omp parallel for reduction(+:sum)
 			for(int j = 0; j < total_values; j++)
 			{
 				sum += pow(clusters[i].getCentralValue(j) -
@@ -222,6 +234,8 @@ public:
 			bool done = true;
 
 			// associates each point to the nearest center
+			// Região paralelizada por demandar maior tempo de execução, onde identifica o cluster mais próximo do ponto em questão.
+			#pragma omp parallel for schedule(guided, 1500) num_threads(8)
 			for(int i = 0; i < total_points; i++)
 			{
 				int id_old_cluster = points[i].getCluster();
@@ -229,25 +243,32 @@ public:
 
 				if(id_old_cluster != id_nearest_center)
 				{
-					if(id_old_cluster != -1)
-						clusters[id_old_cluster].removePoint(points[i].getID());
 
-					points[i].setCluster(id_nearest_center);
-					clusters[id_nearest_center].addPoint(points[i]);
-					done = false;
+					// Região crítica pois há modificação de variaveis
+					#pragma omp critical
+					{
+						if(id_old_cluster != -1)
+							clusters[id_old_cluster].removePoint(points[i].getID());
+					
+						points[i].setCluster(id_nearest_center);
+						clusters[id_nearest_center].addPoint(points[i]);
+						done = false;
+					}					
 				}
 			}
 
-			// recalculating the center of each cluster
-            #pragma omp parallel for collapse(2)
-			for(int i = 0; i < K; i++) {
+			// recalculating the center of each cluster.
+			// Região paralelizada para auxiliar no cálculo dos centroides dos clusters.
+            #pragma omp parallel for num_threads(8)
+			for(int i = 0; i < K; i++) {	
 				for(int j = 0; j < total_values; j++) {
 					int total_points_cluster = clusters[i].getTotalPoints();
 					double sum = 0.0;
 
 					if(total_points_cluster > 0)
 					{
-                        //#pragma omp parallel for reduction(+:sum) 
+						// Região paralela onde acrescente um ponto ao cluster em questão.
+                        #pragma omp parallel for reduction(+:sum) num_threads(8)
 						for(int p = 0; p < total_points_cluster; p++)
 							sum += clusters[i].getPoint(p).getValue(j);
 						clusters[i].setCentralValue(j, sum / total_points_cluster);
@@ -290,7 +311,7 @@ public:
 		// 		cout << clusters[i].getCentralValue(j) << " ";
 
 		// 	cout << "\n\n";
-		
+		// }
 	}
 };
 
