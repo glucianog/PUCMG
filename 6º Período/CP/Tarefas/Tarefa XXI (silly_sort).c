@@ -25,7 +25,7 @@ int main()
     //      printf("%d ",in[i]);
     
     // Silly sort (you have to make this code parallel)
-    #pragma omp target map(tofrom:pos[:n]) map(to:in[:n])
+    #pragma omp target map(to:pos[:n]) map(to:in[:n])
     #pragma omp teams distribute parallel for simd
     //#pragma omp for private (i) collapse(2) reduction(+:pos[:n]) schedule(dynamic, 1250)
     for(i=0; i < n; i++) 
