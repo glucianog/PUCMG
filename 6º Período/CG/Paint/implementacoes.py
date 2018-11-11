@@ -1,4 +1,6 @@
 from math import sqrt
+import math
+import sys
 
 def dda(p1, p2, cor): 
     x, y = p1['x'], p1['y']
@@ -241,3 +243,52 @@ def flood4(x, y, antiga, nova):
         flood4(x-1, y, antiga, nova)
         flood4(x, y+1, antiga, nova)
         flood4(x, y-1, antiga, nova)
+
+
+"""
+ALGORITMO DESENVOLVIDO POR ROBERTO GEA
+DISPONÍVEL EM: https://gist.github.com/Alquimista/1274149
+ACESSO EM: 10/10/2018
+"""
+#Coeficiente Bionimial utilizado no polinômi de Bernstein
+def binomial(i, n):    
+    return math.factorial(n) / float(math.factorial(i) * math.factorial(n - i))
+
+#Equação de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
+def bernstein(t, i, n):
+    return binomial(i, n) * (t ** i) * ((1 - t) ** (n - i))
+
+"""
+Calcula a coordenada de um ponto na curva de Bézier, onde para cada
+novo ponto (i) criado, tem-se f(xi) * bernstein e f(yi) * bernstein 
+"""
+def pontoBezier(t, cPoints):
+    n = len(cPoints) - 1
+    x = y = i = 0
+    for i, pos in enumerate(cPoints):
+        bern = bernstein(t, i, n)
+        x += pos[0] * bern
+        y += pos[1] * bern
+    return x, y
+
+"""
+Quantia de pontos na curva de Bézier
+@param: t = número de pontos a serem criados
+@param: points = pontos de controle
+"""
+def bezier(n, points):
+    resp = []
+    for i in range(n):
+        t = i / float(n - 1)
+        x, y = pontoBezier(t, points)
+        resp.append({'x': x, 'y': y})
+    return resp
+
+
+
+
+
+
+
+
+

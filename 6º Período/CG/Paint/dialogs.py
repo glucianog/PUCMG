@@ -112,3 +112,35 @@ class RotacaoDialog(QDialog):
 		result = dialog.exec_()
 		angulo = dialog.getAngulo()
 		return (radians(float(angulo.replace(',','.'))), result == QDialog.Accepted)
+
+
+class CurvaDialog(QDialog):
+	def __init__(self, parent = None):
+		super(CurvaDialog, self).__init__(parent)
+
+		layout = QFormLayout(self)
+
+		# Input Quantidade Pontos Controle
+		self.pControle = QLineEdit()
+		self.pControle.setValidator(QIntValidator())
+		self.pControle.setMaxLength(4)
+		layout.addRow("Quantidade pontos controle: ", self.pControle)
+
+		# Butões de OK e Cancel
+		buttons = QDialogButtonBox(
+			QDialogButtonBox.Ok | QDialogButtonBox.Cancel,
+			Qt.Horizontal, self)
+		buttons.accepted.connect(self.accept)
+		buttons.rejected.connect(self.reject)
+		layout.addRow(buttons)
+
+	def getQtPontos(self):
+		return self.pControle.text()
+
+	# Método estático que cria o dialog e retorna (qtPontos, aceito)
+	@staticmethod
+	def getResults(parent = None):
+		dialog = CurvaDialog(parent)
+		result = dialog.exec_()
+		qPontos = dialog.getQtPontos()
+		return (qPontos, result == QDialog.Accepted)

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QMainWindow, QAction, qApp, QApplication, QDesktopW
                              QInputDialog)
 from PyQt5.QtGui     import (QIcon, QPainter, QPen, QColor)
 from PyQt5.QtCore    import Qt
-from implementacoes  import (dda, bresenhan, bresenhanCircunferencia, cohenSutherland, liangBarsky)
+from implementacoes  import (dda, bresenhan, bresenhanCircunferencia, cohenSutherland, liangBarsky, bezier)
 from dialogs         import *
 from math            import * 
 
@@ -14,11 +14,15 @@ class Example(QMainWindow):
         self.linhas_dda = []
         self.linhas_bsr = []
         self.circulos   = []
+        self.ctrlCurva  = []
         self.comando    = '' 
         self.preenchimento = []
         self.recorteIni = None
         self.recorteFim = None
-        self.initUI()       
+        self.nPtsControle = -1
+        self.auxControle  = 0
+        self.initUI()    
+           
             
     def initUI(self):              
         self.resize(1024, 768)
@@ -62,6 +66,11 @@ class Example(QMainWindow):
         drawAct = QAction(QIcon('icones/paint.png'), 'Preenchimento Flood-Fill (Ctrl+F)', self.toolbar)
         drawAct.setShortcut('Ctrl+F')
         drawAct.triggered.connect(self.btnPreenchimentoFlood)
+        self.toolbar.addAction(drawAct)
+
+        drawAct = QAction(QIcon('icones/bezier.png'), 'Curva Bézier (Ctrl+E)', self.toolbar)
+        drawAct.setShortcut('Ctrl+E')
+        drawAct.triggered.connect(self.showCurvaDialog)
         self.toolbar.addAction(drawAct)
 
         drawAct = QAction(QIcon('icones/clear.png'), 'Limpar Tela (Ctrl+L)', self.toolbar)
@@ -132,7 +141,14 @@ class Example(QMainWindow):
                 p = {'x': x, 'y': y}
                 atual = self.obterCor(x, y)
                 nova  = QColor(Qt.blue).rgb()
-                self.preenchimento += self.flood4(p, atual, nova)                     
+                self.preenchimento += self.flood4(p, atual, nova)  
+            elif self.comando == 'curvaBezier':                
+                x, y = event.pos().x(), event.pos().y()
+                if self.auxControle < self.nPtsControle:
+                    self.auxControle += 1
+                    self.ctrlCurva.append(tuple((x,y)))
+                print("comando: {}, Valor de x:{}, valor de y:{}, qt pontos Controle:{}, qt pontos Aux: {}"
+                    .format(self.comando, x, y, self.nPtsControle, self.auxControle))
 
     def mouseMoveEvent(self, event):
         if self.comando == 'dda':
@@ -186,7 +202,22 @@ class Example(QMainWindow):
                     p2 = {'x': x2, 'y': y2}
                     for ponto in bresenhan(p1, p2, cor):
                         painter.drawPoint(ponto['x'], ponto['y'])
-            self.update()
+
+                # CURVA DE BÉZIER
+                pen = QPen(Qt.red, 10, Qt.SolidLine)
+                painter.setPen(pen)   
+                for p in self.ctrlCurva:
+                    painter.drawPoint(p[0], p[1])
+
+                if self.nPtsControle == self.auxControle:                             
+                        pen = QPen(Qt.blue, 3, Qt.SolidLine)
+                        painter.setPen(pen) 
+                        aux = bezier(500, self.ctrlCurva)
+
+                        for pontos in aux:
+                            painter.drawPoint(pontos['x'], pontos['y'])
+
+            self.update()            
         elif self.comando == 'recortelb' and self.recorteIni:
             if self.recorteIni and self.recorteFim:
                 pen = QPen(cor, 3, Qt.DashLine)
@@ -214,6 +245,21 @@ class Example(QMainWindow):
                     p2 = {'x': x2, 'y': y2}
                     for ponto in bresenhan(p1, p2, cor):
                         painter.drawPoint(ponto['x'], ponto['y'])
+
+                # CURVA DE BÉZIER
+                pen = QPen(Qt.red, 10, Qt.SolidLine)
+                painter.setPen(pen)   
+                for p in self.ctrlCurva:
+                    painter.drawPoint(p[0], p[1])
+
+                if self.nPtsControle == self.auxControle:                             
+                        pen = QPen(Qt.blue, 3, Qt.SolidLine)
+                        painter.setPen(pen) 
+                        aux = bezier(500, self.ctrlCurva)
+
+                        for pontos in aux:
+                            painter.drawPoint(pontos['x'], pontos['y'])
+
             self.update()
         else:
             for p1,p2 in self.linhas_dda:
@@ -233,6 +279,21 @@ class Example(QMainWindow):
             painter.setPen(pen) 
             for ponto in self.preenchimento:                    
                 painter.drawPoint(ponto['x'], ponto['y'])
+
+            # CURVA DE BÉZIER
+            pen = QPen(Qt.red, 10, Qt.SolidLine)
+            painter.setPen(pen)   
+            for p in self.ctrlCurva:
+                painter.drawPoint(p[0], p[1])
+
+            if self.nPtsControle == self.auxControle:                             
+                    pen = QPen(Qt.black, 3, Qt.SolidLine)
+                    painter.setPen(pen) 
+                    aux = bezier(500, self.ctrlCurva)
+
+                    for pontos in aux:
+                        painter.drawPoint(pontos['x'], pontos['y'])
+
             self.update()
 
     def btnDDA(self):
@@ -254,13 +315,16 @@ class Example(QMainWindow):
         self.comando = 'preenchimentoBoundary'
         
     def btnPreenchimentoFlood(self):
-        self.comando = 'preenchimentoFlood'
+        self.comando = 'preenchimentoFlood'  
     
     def limparTela(self):
         self.circulos      = []
         self.linhas_bsr    = []
         self.linhas_dda    = []
         self.preenchimento = []
+        self.ctrlCurva     = []
+        self.auxControle   = 0
+        self.nPtsControle  = 0
         self.update()
 
     def center(self):
@@ -484,6 +548,15 @@ class Example(QMainWindow):
         cor = image.pixelColor(x, y).rgb()
         return cor  
 
+    ########### SEÇÃO CURVA BÉZIER ##########
+    def showCurvaDialog(self):
+        self.comando = 'curvaBezier'
+        x, ok = CurvaDialog.getResults()
+        if ok:                
+            self.nPtsControle = int(x)
+            self.auxControle = 0
+
+    
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Example()
