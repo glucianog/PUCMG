@@ -124,7 +124,7 @@ class CurvaDialog(QDialog):
 		self.pControle = QLineEdit()
 		self.pControle.setValidator(QIntValidator())
 		self.pControle.setMaxLength(4)
-		layout.addRow("Quantidade pontos controle: ", self.pControle)
+		layout.addRow("Quantia pontos de controle: ", self.pControle)
 
 		# Butões de OK e Cancel
 		buttons = QDialogButtonBox(
