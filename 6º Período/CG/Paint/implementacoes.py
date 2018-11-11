@@ -250,11 +250,11 @@ ALGORITMO DESENVOLVIDO POR ROBERTO GEA
 DISPONÍVEL EM: https://gist.github.com/Alquimista/1274149
 ACESSO EM: 10/10/2018
 """
-#Coeficiente Bionimial utilizado no polinômi de Bernstein
+#Coeficiente Bionimial utilizado no polinômio de Bernstein
 def binomial(i, n):    
     return math.factorial(n) / float(math.factorial(i) * math.factorial(n - i))
 
-#Equação de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
+#Polinômio de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
 def bernstein(t, i, n):
     return binomial(i, n) * (t ** i) * ((1 - t) ** (n - i))
 
