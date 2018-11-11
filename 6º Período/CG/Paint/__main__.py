@@ -555,6 +555,7 @@ class Example(QMainWindow):
         if ok:                
             self.nPtsControle = int(x)
             self.auxControle = 0
+            self.ctrlCurva = []
 
     
 if __name__ == '__main__':
