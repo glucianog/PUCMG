@@ -250,6 +250,7 @@ ALGORITMO DESENVOLVIDO POR ROBERTO GEA
 DISPONÍVEL EM: https://gist.github.com/Alquimista/1274149
 ACESSO EM: 10/10/2018
 """
+
 """
 Coeficiente Bionimial de Newton utilizado no polinômio de Bernstein
 @param: i (int) = iésimo coeficiente da interpolação
@@ -257,6 +258,7 @@ Coeficiente Bionimial de Newton utilizado no polinômio de Bernstein
 """
 def binomial(i, n):    
     return math.factorial(n) / float(math.factorial(i) * math.factorial(n - i))
+
 
 """
 Polinômio de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
@@ -266,6 +268,7 @@ Polinômio de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
 """
 def bernstein(t, i, n):
     return binomial(i, n) * (t ** i) * ((1 - t) ** (n - i))
+
 
 """
 Calcula a coordenada de um ponto na curva de Bézier, onde para cada novo
@@ -282,6 +285,7 @@ def pontoBezier(t, cPoints):
         x += pos[0] * bern
         y += pos[1] * bern
     return x, y
+
 
 """
 Quantia de pontos na curva de Bézier
