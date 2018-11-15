@@ -557,6 +557,7 @@ class Example(QMainWindow):
             self.auxControle = 0
             self.ctrlCurva = []
 
+
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)
