@@ -289,7 +289,7 @@ class Example(QMainWindow):
             if self.nPtsControle == self.auxControle:                             
                     pen = QPen(Qt.black, 3, Qt.SolidLine)
                     painter.setPen(pen) 
-                    aux = bezier(500, self.ctrlCurva)
+                    aux = bezier(10000, self.ctrlCurva)
 
                     for pontos in aux:
                         painter.drawPoint(pontos['x'], pontos['y'])

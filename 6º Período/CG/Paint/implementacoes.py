@@ -250,17 +250,29 @@ ALGORITMO DESENVOLVIDO POR ROBERTO GEA
 DISPONÍVEL EM: https://gist.github.com/Alquimista/1274149
 ACESSO EM: 10/10/2018
 """
-#Coeficiente Bionimial utilizado no polinômio de Bernstein
+"""
+Coeficiente Bionimial de Newton utilizado no polinômio de Bernstein
+@param: i (int) = iésimo coeficiente da interpolação
+@param: n (int) = quantidade total de pontos
+"""
 def binomial(i, n):    
     return math.factorial(n) / float(math.factorial(i) * math.factorial(n - i))
 
-#Polinômio de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
+"""
+Polinômio de Bernstein = Combinação n,i * (t ^ (n-1)) * (1-t)^i
+@param: t (int) = Valor paramétrico da curva
+@param: i (int) = ponto atual da curva
+@param: n (int) = quantidade total de pontos
+"""
 def bernstein(t, i, n):
     return binomial(i, n) * (t ** i) * ((1 - t) ** (n - i))
 
 """
-Calcula a coordenada de um ponto na curva de Bézier, onde para cada
-novo ponto (i) criado, tem-se f(xi) * bernstein e f(yi) * bernstein 
+Calcula a coordenada de um ponto na curva de Bézier, onde para cada novo
+ponto (i) criado, tem-se f(xi) * bernstein e f(yi) * bernstein 
+@param: t (int) = Valor paramétrico da curva, valor entre 0 e 1, intervalo
+entre os pontos a serem criados.
+@param: cPoints (Tupla inteiros) = Pontos de controle da curva a ser criada
 """
 def pontoBezier(t, cPoints):
     n = len(cPoints) - 1
@@ -273,8 +285,8 @@ def pontoBezier(t, cPoints):
 
 """
 Quantia de pontos na curva de Bézier
-@param: t = número de pontos a serem criados
-@param: points = pontos de controle
+@param: n (int) = número de pontos a serem criados
+@param: points (Tupla inteiros )= pontos de controle
 """
 def bezier(n, points):
     resp = []
