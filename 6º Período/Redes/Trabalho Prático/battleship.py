@@ -292,7 +292,7 @@ if __name__ == "__main__":
         while True:      
 
             #Posicionar minha frota
-            buildMyBoard(my_board)
+            buildBoard(my_board)
             #Iniciar o Jogo
             startGame(con)
             response = "Fim do jogo. Para finalizar conexão com servidor, digite 'exit' \n "  
