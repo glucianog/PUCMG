@@ -16,13 +16,15 @@ my_counter     = 0
 # Mostrar um tabuleiro selecionado
 def print_board(board):
   for row in board:
-    print (" ".join(row) + "\n")
+    print (" ".join(row))
 
 # Enviar tabuleiro selecionado para o Cliente
 def printBoardToClient(board, con):
+    response = "\n"
     for row in board:
-        response = (" ".join(row))
-        con.send(str.encode(response))
+        response += (" ".join(row))   
+        response += "\n" 
+    con.send(str.encode(response))
 
 def random_row():
   return random.randint(0,9)
@@ -163,44 +165,44 @@ def startGame(con):
 
         if command == "A":         
             while player % 2 == 0 :  
-                response = "Linha a ser atacada ou P para Mostrar Tabuleiro \n"  
+                response = "Sua vez! \n Linha a ser atacada ou P para Mostrar Tabuleiro \n"  
                 con.send(str.encode(response))  
                 msg = con.recv(1024)      
                 if msg == "P":
                     printBoardToClient(shown_board, con)
                     continue
+                else: 
+                    i = int(msg.decode())
 
-                i = int(msg.decode())
+                    response = "Coluna a ser atacada ou P para Mostrar Tabuleiro \n"  
+                    con.send(str.encode(response))  
+                    msg = con.recv(1024)  
+                    if msg == "P":
+                        printBoardToClient(shown_board, con)
+                    else: 
+                        j = int(msg.decode())
 
-                response = "Coluna a ser atacada ou P para Mostrar Tabuleiro \n"  
-                con.send(str.encode(response))  
-                msg = con.recv(1024)  
-                if msg == "P":
-                    printBoardToClient(shown_board, con)
-
-                j = int(msg.decode())
-
-                if choosenPos(i, j, "myself"):
-                    if shown_board[i][j] != "-":
-                        response = "Você acertou uma peça na posição x: {} y: {}! Faça mais uma jogada.\n".format(i, j)  
-                        con.send(str.encode(response)) 
-                    else:
-                        response = "Você errou! Na posição x:{}, y{}\n".format(i,j)  
-                        con.send(str.encode(response))
-                        player += 1                
-                else:
-                    response = "Você já atacou essa posição! Posição x:{}, y:{}\n".format(i,j) 
-                    con.send(str.encode(response))
+                        if choosenPos(i, j, "myself"):
+                            if shown_board[i][j] != "-":
+                                response = "Você acertou uma peça na posição x: {} y: {}! Faça mais uma jogada.\n".format(i, j)  
+                                con.send(str.encode(response)) 
+                            else:
+                                response = "Você errou! Na posição x:{}, y{}\n".format(i,j)  
+                                con.send(str.encode(response))
+                                player += 1                
+                        else:
+                            response = "Você já atacou essa posição! Posição x:{}, y:{}\n".format(i,j) 
+                            con.send(str.encode(response))
             
             i  = random_row()
             j  = random_col()
 
+            
             while player % 2 != 0:
-                response = "Rodada do inimigo!\n" 
+                response = "Rodada do inimigo!\n"                 
                 con.send(str.encode(response))
+
                 if choosenPos(i, j, "enemy"):
-                    response = "O inimigo acertou!\n" 
-                    con.send(str.encode(response))
                     if my_shown_board[i][j] == "-":
                         if i + 1 < 10:
                             i += 1
@@ -213,8 +215,11 @@ def startGame(con):
                     else:
                         player += 1
                 else:
-                    i  = random_row()
-                    j  = random_col()
+                    player += 1
+                    
+            response = "Sua vez, pressione enter!"
+            con.send(str.encode(response))
+
         elif command == "P":
             printBoardToClient(shown_board, con)
 
@@ -290,7 +295,7 @@ if __name__ == "__main__":
         while True:      
 
             #Posicionar minha frota
-            buildMyBoard(con)
+            buildMyBoard(my_board)
             #Iniciar o Jogo
             startGame(con)
             response = "Fim do jogo. Para finalizar conexão com servidor, digite 'exit' \n "  
