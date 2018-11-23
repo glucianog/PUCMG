@@ -216,9 +216,6 @@ def startGame(con):
                         player += 1
                 else:
                     player += 1
-                    
-            response = "Sua vez, pressione enter!"
-            con.send(str.encode(response))
 
         elif command == "P":
             printBoardToClient(shown_board, con)
