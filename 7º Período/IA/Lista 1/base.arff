@@ -1,0 +1,31 @@
+%1. Title: Esperar ou NAO pelo restaurante database
+%2. Lista 1 - Inteligência Artificial
+
+@RELATION VaiEsperar
+
+@ATTRIBUTE Alternativo {SIM, NAO}
+@ATTRIBUTE Bar         {SIM, NAO}
+@ATTRIBUTE Sex/Sab     {SIM, NAO}
+@ATTRIBUTE Fome        {SIM, NAO}
+@ATTRIBUTE Cliente     {Nenhum, Alguns, Cheio}
+@ATTRIBUTE Preço       {R,RR,RRR}
+@ATTRIBUTE Chuva       {SIM, NAO}
+@ATTRIBUTE Res         {SIM, NAO}
+@ATTRIBUTE Tipo        {Tailandes, Italiano, Frances, Hamburguer}
+@ATTRIBUTE Tempo       {0-10,10-30,30-60,>60}
+@ATTRIBUTE Class       {SIM, NAO} 
+
+
+@DATA
+SIM,NAO,NAO,SIM,Alguns,RRR,NAO,SIM,Frances,0-10,SIM
+SIM,NAO,NAO,SIM,Cheio,R,NAO,NAO,Tailandes,30-60,NAO
+NAO,SIM,NAO,NAO,Alguns,R,NAO,NAO,Hamburguer,0-10,SIM
+SIM,NAO,SIM,SIM,Cheio,R,SIM,NAO,Tailandes,10-30,SIM
+SIM,NAO,SIM,NAO,Cheio,RRR,NAO,SIM,Frances,>60,NAO
+NAO,SIM,NAO,SIM,Alguns,RR,SIM,SIM,Italiano,0-10,SIM
+NAO,SIM,NAO,NAO,Nenhum,R,SIM,NAO,Hamburguer,0-10,NAO
+NAO,NAO,NAO,SIM,Alguns,RR,SIM,SIM,Tailandes,0-10,SIM
+NAO,SIM,SIM,NAO,Cheio,R,SIM,NAO,Hamburguer,>60,NAO
+SIM,SIM,SIM,SIM,Cheio,RRR,NAO,SIM,Italiano,10-30,NAO
+NAO,NAO,NAO,NAO,Nenhum,R,NAO,NAO,Tailandes,0-10,NAO
+SIM,SIM,SIM,SIM,Cheio,R,NAO,NAO,Hamburguer,30-60,SIM
