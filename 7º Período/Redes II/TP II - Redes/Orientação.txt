@@ -1,0 +1,32 @@
+Orientações para a Trabalho
+
+Nesta atividade você deverá reponder ao questionário de cada um dos arquivos de Wireshark. São eles a 
+Introdução, DNS, HTTP. Para tanto, você deverá instalar o programa Wireshark, gratuito, que pode ser obtido
+em https://www.wireshark.org/download.html.
+
+Para responder o questionário siga o roteiro de cada protocolo estudado. NÃO use os arquivos de log disponibilizados pelo autor.
+
+Você deverá salvar os arquivos coletados com o Wireshark com a extensão .pcap e entregá-los via SGA. Ao salvar 
+os arquivos deixe-os com nomes sugestivos, por exemplo, http-1a8.pcap para indicar que aquele log foi usado para 
+responder as perguntas do roteiro do http de 1 a 8. Para o arquivo não ficar muito grande, use a opção "File", "Export Specified Packets", "All Packets" "Displayed". 
+Imagino que antes deste ponto vc já tenha aplicado o filtro para diminuir número de pacotes apresentados na tela do programa.
+
+As respostas devem ser entregues impressas ao professor na data combinada! Atrasos serão penalizados com 1 ponto por dia de atraso.
+
+Quando for pedido para gravar a tela de captura, principalmente no roteiro do DNS, use a opção Print Screen ou Ferramenta de Captura para 
+capturar a tela do Wireshark. Quero ver estas imagens em seu arquivo impresso!!
+
+Alguns links do roteiro em português estão faltando o ".html" ou com espaço em branco, preste atenção antes de reclamar!  
+
+Cópias serão penalizadas com zero para forncedor e consumidor.
+
+Uma base teórica pode ser estudada no livro Redes de Computadores e a Internet  - Uma abordagem Top-down -
+6a Edição de James F. Kurose, Editora Pearson - Addison Wesley, 2013
+
+O sucesso de seu trabalho depende dos filtros que vc colocar no campo "Filter" na janela do Wireshark, no do dns use a string 'dns' e se ainda aparecer muito 
+pacote coloque ' && ip.addr == SEU-IP', troque o SEU-IP pelo ip de sua interface de rede. Em caso de dúvidas ou para conhecer melhor as questões dos filtros veja o 
+arquivo postado no SGA.
+
+Você deve gastar umas 3 ou 4 horas para fazer cada roteiro, não deixe para última hora.
+
+Entregas sem o logs nem serão corrigidas.
