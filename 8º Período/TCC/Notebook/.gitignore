@@ -1,0 +1,11 @@
+# Arquivos de entrada
+*.in
+
+# Arquivos executaveis
+*.exe
+
+#Arquivos do Visual Studio
+\.vscode/
+
+#Base de dados
+\database/
